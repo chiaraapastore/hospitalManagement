@@ -1,0 +1,29 @@
+<div class="register">
+  <div class="register-card">
+    <h3>Registrazione</h3>
+    <form (submit)="register()">
+      <label>Username</label>
+      <input type="text" [(ngModel)]="username" required />
+
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" required />
+
+      <label>Password</label>
+      <input type="password" [(ngModel)]="password" required />
+
+      <label>Conferma Password</label>
+      <input type="password" [(ngModel)]="confirmPassword" required />
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">Registrati</button>
+    </form>
+  </div>
+
+  <div *ngIf="showErrorScreen" class="error-popup">
+    <p>Errore durante la registrazione. Riprova.</p>
+    <button (click)="handleErrorOk()">OK</button>
+  </div>
+
+  <div *ngIf="showSuccessScreen" class="success-popup">
+    <p>Registrazione avvenuta con successo!</p>
+  </div>
+</div>

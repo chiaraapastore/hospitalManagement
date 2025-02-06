@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="login-card">
+    <h3>Login</h3>
+    <form (submit)="login()">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" required />
+      <label>Password</label>
+      <input type="password" [(ngModel)]="password" required />
+      <button type="submit" class="btn btn-primary w-100 mt-3">Accedi</button>
+    </form>
+  </div>
+
+  <div *ngIf="showErrorScreen" class="error-popup">
+    <p>Credenziali errate. Riprova.</p>
+    <button (click)="handleErrorOk()">OK</button>
+  </div>
+  <div class="logout-container" *ngIf="isLogged">
+    <p>Benvenuto! Sei autenticato.</p>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</div>
+
+
+<div *ngIf="!isLogged && showErrorScreen" class="error-screen">
+  <div class="error-content">
+    <div class="error-container">
+      <img src="assets/login/icons/error.ico" alt="Error Icon" class="error-icon" />
+      <p class="error-message">The username or password is incorrect</p>
+    </div>
+    <button (click)="handleErrorOk()">OK</button>
+  </div>
+</div>
+
