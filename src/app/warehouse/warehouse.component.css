@@ -1,0 +1,31 @@
+.warehouse-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #007bff;
+}
+
+.table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.low-stock {
+  color: red;
+  font-weight: bold;
+}
+
+.btn {
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
