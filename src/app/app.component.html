@@ -51,19 +51,19 @@
 
 <div class="testimonials">
   <h2>Cosa Dicono di Noi</h2>
-      <div class="testimonial-carousel">
-        <button class="carousel-btn prev-btn" (click)="scrollCarousel(-1)">❮</button>
-          <div class="testimonial-wrapper">
-            <div class="testimonial-grid">
-              <div *ngFor="let testimonial of visibleTestimonials" class="testimonial">
-                <p>"{{ testimonial.text }}"</p>
-                   <span>- {{ testimonial.author }}</span>
-               </div>
-            </div>
-           </div>
-           <button class="carousel-btn next-btn" (click)="scrollCarousel(1)">❯</button>
-       </div>
+  <div class="testimonial-carousel">
+    <button class="carousel-btn prev-btn" (click)="scrollCarousel(-1)">❮</button>
+    <div class="testimonial-wrapper">
+      <div class="testimonial-grid">
+        <div *ngFor="let testimonial of visibleTestimonials" class="testimonial">
+          <p>"{{ testimonial.text }}"</p>
+          <span>- {{ testimonial.author }}</span>
+        </div>
+      </div>
     </div>
+    <button class="carousel-btn next-btn" (click)="scrollCarousel(1)">❯</button>
+  </div>
+</div>
 
 
 <footer>

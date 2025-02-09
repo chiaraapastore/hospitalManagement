@@ -12,61 +12,40 @@ export class AuthService {
   private keycloakLogoutUrl = 'http://localhost:8080/realms/hospital-realm/protocol/openid-connect/logout';
   private clientId = 'admin-cli';
   private clientSecret = 'lZ7ngbTdzKR5C43H0JHQsyjKDynVzdZu';
+  keycloak: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  async initKeycloak(): Promise<void> {
+    await this.keycloak.init({
+      config: {
+        url: 'http://localhost:8080',
+        realm: 'hospital-realm',
+        clientId: 'hospital-app'
+      },
+      initOptions: {
+        onLoad: 'login-required',
+        checkLoginIframe: false
+      }
+    });
+  }
 
-  login(email: string, password: string): Observable<void> {
-    const body = new HttpParams()
-      .set('grant_type', 'password')
-      .set('client_id', this.clientId)
-      .set('client_secret', this.clientSecret)
-      .set('username', email)
-      .set('password', password);
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-
-    return this.http.post(this.keycloakUrl, body.toString(), { headers }).pipe(
-      map((response: any) => {
-        this.storeTokens(response);
-        this.router.navigateByUrl('/dashboard');
-      }),
-      catchError(error => {
-        console.error('Errore login:', error);
-        return throwError(() => error);
-      })
-    );
+  login(): void {
+    this.keycloak.login();
   }
 
   logout(): void {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (refreshToken) {
-      const body = new HttpParams()
-        .set('client_id', this.clientId)
-        .set('client_secret', this.clientSecret)
-        .set('refresh_token', refreshToken);
-
-      this.http.post(this.keycloakLogoutUrl, body.toString(), {
-        headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
-      }).subscribe({
-        next: () => console.log('Token revocato su Keycloak'),
-        error: (err) => console.error('Errore nella revoca del token:', err)
-      });
-    }
-
-    localStorage.clear();
-    this.router.navigateByUrl('/login');
+    this.keycloak.logout();
   }
 
-  getToken(): Observable<string> {
-    const tokenExpiry = parseInt(localStorage.getItem('tokenExpiry') || '0', 10);
-    if (tokenExpiry <= Date.now()) {
-      return this.refreshToken().pipe(
-        switchMap(() => of(localStorage.getItem('accessToken') || ''))
-      );
-    }
-    return of(localStorage.getItem('accessToken') || '');
+  isAuthenticated(): Promise<boolean> {
+    return this.keycloak.isLoggedIn();
   }
+
+  getToken(): Promise<string> {
+    return this.keycloak.getToken();
+  }
+  
 
 
   private refreshToken(): Observable<void> {

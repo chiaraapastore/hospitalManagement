@@ -4,6 +4,6 @@ export const environment = {
   keycloak: {
     url: 'http://localhost:8080',
     realm: 'hospital-realm',
-    clientId: 'admin-cli',
+    clientId: 'hospital-app',
   }
 };
