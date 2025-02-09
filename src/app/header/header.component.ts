@@ -25,7 +25,13 @@ export class HeaderComponent implements OnInit {
 
 
   loadNotifications(): void {
-    this.notificationsService.getUnreadCount().subscribe({
+    const userId = this.authService.getCurrentUserId();
+    if (!userId) {
+      console.error("Errore: Nessun ID utente trovato.");
+      return;
+    }
+
+    this.notificationsService.getUnreadCount(userId).subscribe({
       next: (count: number) => {
         this.unreadNotifications = count;
       },
@@ -35,7 +41,7 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    this.notificationsService.getUserNotifications(1).subscribe({
+    this.notificationsService.getUserNotifications(userId).subscribe({
       next: (notifications: any[]) => {
         this.notifications = notifications;
       },
@@ -44,7 +50,6 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
 
   showNotifications(): void {
     this.showNotificationList = !this.showNotificationList;

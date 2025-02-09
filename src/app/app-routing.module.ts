@@ -1,21 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { MedicinesComponent } from './warehouse/medicines.component';
-import { AuthGuard } from './guards/auth.guard';
-import { LoginComponent } from './auth/login.component';
+import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'warehouse', component: MedicinesComponent, canActivate: [AuthGuard] },
+  { path: 'warehouse', component: WarehouseComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
-
+export const AppRoutingModule = RouterModule.forRoot(routes);

@@ -4,6 +4,7 @@ import { MedicinesService } from '../services/medicines.service';
 @Component({
   selector: 'app-medicines',
   templateUrl: './medicines.component.html',
+  standalone: true,
   styleUrls: ['./medicines.component.scss']
 })
 export class MedicinesComponent implements OnInit {

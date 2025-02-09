@@ -1,0 +1,29 @@
+<div class="login-container">
+  <div class="login-card">
+    <h3>Login</h3>
+    <form (submit)="login()">
+      <label>Email o Username</label>
+      <input type="email" [(ngModel)]="email" required placeholder="Email o Username" />
+
+      <label>Password</label>
+      <div class="password-container">
+        <input type="password" [(ngModel)]="password" required placeholder="Password" />
+        <i class="fas fa-eye" (click)="togglePassword()"></i>
+      </div>
+
+      <button type="submit" class="cta-button">Accedi</button>
+    </form>
+
+    <a class="forgot-password" href="#">Hai dimenticato la password?</a>
+  </div>
+
+  <div *ngIf="showErrorScreen" class="error-popup">
+    <p>Credenziali errate. Riprova.</p>
+    <button (click)="handleErrorOk()">OK</button>
+  </div>
+
+  <div class="logout-container" *ngIf="isLogged">
+    <p>Benvenuto! Sei autenticato.</p>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</div>

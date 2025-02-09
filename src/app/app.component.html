@@ -1,14 +1,93 @@
-<div class="full-page">
+<!DOCTYPE html>
+<html lang="it">
 
-  <h1 class="title">HealthCare</h1>
-
-  <div class="menu-container">
-    <ul class="nav-links">
-      <li><a href="/dashboard">Dashboard</a></li>
-      <li><a href="/warehouse">Medicine</a></li>
-      <li><a href="/patients">Pazienti</a></li>
-      <li><a href="/reports">Report</a></li>
-    </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<section class="hero" [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Benvenuti in HospitalCare</h1>
+    <p>La piattaforma che rivoluziona la gestione delle scorte mediche</p>
   </div>
+</section>
+<body>
 
-</div>
+<section class="services">
+  <div class="container">
+    <h2>Le Nostre Funzionalità</h2>
+    <div class="service-grid">
+      <div class="service">
+        <i class="fas fa-pills"></i>
+        <h3>Gestione Medicine</h3>
+        <p>Monitora le medicine somministrate ai pazienti e tieni traccia delle scorte.</p>
+      </div>
+      <div class="service">
+        <i class="fas fa-notes-medical"></i>
+        <h3>Segnalazione Riordino</h3>
+        <p>Ricevi notifiche automatiche quando è necessario riordinare le scorte.</p>
+      </div>
+      <div class="service">
+        <i class="fas fa-archive"></i>
+        <h3>Ottimizzazione Magazzino</h3>
+        <p>Mantieni sotto controllo le rimanenze di magazzino e previeni gli stockout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container cta-section">
+  <h1>Inizia Ora</h1>
+  <p>Registrati o accedi per utilizzare le funzionalità.</p>
+  <div class="cta-buttons">
+    <a href="/login" class="cta-button">Login</a>
+    <a href="/create-account" class="cta-button">Crea Account</a>
+  </div>
+</main>
+
+
+<div class="testimonials">
+  <h2>Cosa Dicono di Noi</h2>
+      <div class="testimonial-carousel">
+        <button class="carousel-btn prev-btn" (click)="scrollCarousel(-1)">❮</button>
+          <div class="testimonial-wrapper">
+            <div class="testimonial-grid">
+              <div *ngFor="let testimonial of visibleTestimonials" class="testimonial">
+                <p>"{{ testimonial.text }}"</p>
+                   <span>- {{ testimonial.author }}</span>
+               </div>
+            </div>
+           </div>
+           <button class="carousel-btn next-btn" (click)="scrollCarousel(1)">❯</button>
+       </div>
+    </div>
+
+
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contattaci</h3>
+        <p><i class="fas fa-envelope" style="color: #004D40;"></i> <a href="mailto:supporto@hospitalcare.it">supporto&#64;hospitalcare.it</a></p>
+        <p><i class="fas fa-phone" style="color: #004D40;"></i> <a href="tel:+390123456789">+39 012 345 6789</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>Seguici</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f" style="color: #004D40;"></i></a>
+          <a href="#"><i class="fab fa-twitter" style="color: #004D40;"></i></a>
+          <a href="#"><i class="fab fa-instagram" style="color: #004D40;"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+    </div>
+  </div>
+</footer>
+<router-outlet></router-outlet>
+</body>
+</html>

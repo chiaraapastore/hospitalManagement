@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { NotificationsService } from './services/notifications.service';
 import { AuthService } from './services/auth.service';
-import { AppComponent } from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {KeycloakService} from 'keycloak-angular';
+
 
 @NgModule({
   imports: [
@@ -15,8 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AppComponent
   ],
-  providers: [NotificationsService, AuthService]
+  providers: [NotificationsService, AuthService, KeycloakService],
 })
 export class AppModule {}

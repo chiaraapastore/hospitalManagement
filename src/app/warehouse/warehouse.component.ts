@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { WarehouseService, Medicine } from '../services/warehouse.service';
 
 @Component({
   selector: 'app-warehouse',
   templateUrl: './warehouse.component.html',
   standalone: true,
-  styleUrls: ['./warehouse.component.css']
+  styleUrls: ['./warehouse.component.css'],
+  imports: [CommonModule, RouterModule]
 })
 export class WarehouseComponent implements OnInit {
   medicines: Medicine[] = [];

@@ -1,31 +1,38 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable, from } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { isPlatformBrowser } from '@angular/common';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-  const isPublicRequest = req.url.includes('/public');
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(
+    private keycloakService: KeycloakService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  if (isPublicRequest) return next(req);
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!isPlatformBrowser(this.platformId)) {
 
-  return authService.getToken().pipe(
-    switchMap(token => {
-      if (token) {
-        const clonedRequest = req.clone({
-          setHeaders: { Authorization: `Bearer ${token}` },
-        });
-        return next(clonedRequest);
-      } else {
-        router.navigate(['login']);
-        return next(req);
-      }
-    }),
-    catchError(error => {
-      console.error('Errore durante il refresh del token:', error);
-      return next(req);
-    })
-  );
-};
+      return next.handle(req);
+    }
+
+    return from(this.keycloakService.getToken()).pipe(
+      switchMap(token => {
+        const clonedRequest = token
+          ? req.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          : req;
+        return next.handle(clonedRequest);
+      }),
+      catchError(error => {
+        console.error("Errore durante l'intercettazione della richiesta:", error);
+        return next.handle(req);
+      })
+    );
+  }
+}

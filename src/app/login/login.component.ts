@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -12,10 +12,10 @@ import {CommonModule} from '@angular/common';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  protected email: string = '';
-  protected password: string = '';
-  protected showErrorScreen: boolean = false;
-  protected isLogged: boolean = false;
+  email: string = '';
+  password: string = '';
+  showErrorScreen: boolean = false;
+  isLogged: boolean = false;
   private errorTimeout: any;
 
   constructor(private keycloakService: KeycloakService, private router: Router) {}
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const token = await this.keycloakService.getToken();
       localStorage.setItem('accessToken', token);
       this.showErrorScreen = false;
-      this.router.navigate(['/dashboard']);
+      this.router.navigateByUrl('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
       this.showErrorScreen = true;
@@ -57,4 +57,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.showErrorScreen = false;
   }
 
+  togglePassword() {
+    const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
+    if (passwordInput) {
+      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+  }
 }
