@@ -6,11 +6,10 @@ import { NotificationsService } from './services/notifications.service';
 import { AuthService } from './services/auth.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    imports: [CommonModule, FormsModule, RouterOutlet],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'hospitalCare';
