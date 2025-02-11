@@ -1,1 +1,42 @@
-<p>patients works!</p>
+<div class="pazienti-container">
+  <h1>Gestione Pazienti</h1>
+
+  <div class="form-section">
+    <h2>Cerca Paziente per ID</h2>
+    <input type="number" [(ngModel)]="pazienteId" placeholder="ID Paziente" />
+    <button (click)="cercaPaziente()">Cerca</button>
+  </div>
+
+
+  <div *ngIf="pazienteSelezionato" class="dettagli-paziente">
+    <h2>Dettagli Paziente</h2>
+    <p><strong>Nome:</strong> {{ pazienteSelezionato.nome }}</p>
+    <p><strong>Cognome:</strong> {{ pazienteSelezionato.cognome }}</p>
+    <p><strong>Età:</strong> {{ pazienteSelezionato.eta }}</p>
+    <p><strong>Diagnosi:</strong> {{ pazienteSelezionato.diagnosi }}</p>
+    <p><strong>Email:</strong> {{ pazienteSelezionato.email }}</p>
+    <button (click)="cancellaPaziente(pazienteSelezionato.id!)">Cancella Paziente</button>
+  </div>
+
+
+  <div class="lista-pazienti">
+    <h2>Lista Pazienti</h2>
+    <ul>
+      <li *ngFor="let paziente of pazienti" (click)="pazienteSelezionato = paziente">
+        {{ paziente.nome }} {{ paziente.cognome }} - <i>ID: {{ paziente.id }}</i>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-section">
+    <h2>Crea Nuovo Paziente</h2>
+    <form (ngSubmit)="salvaPaziente()">
+      <input [(ngModel)]="nuovoPaziente.nome" name="nome" placeholder="Nome" required>
+      <input [(ngModel)]="nuovoPaziente.cognome" name="cognome" placeholder="Cognome" required>
+      <input [(ngModel)]="nuovoPaziente.eta" name="eta" placeholder="Età" type="number" required>
+      <input [(ngModel)]="nuovoPaziente.diagnosi" name="diagnosi" placeholder="Diagnosi" required>
+      <input [(ngModel)]="nuovoPaziente.email" name="email" placeholder="Email" required>
+      <button type="submit">Salva Paziente</button>
+    </form>
+  </div>
+</div>

@@ -1,14 +1,28 @@
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { WarehouseComponent } from './warehouse/warehouse.component';
 import { AuthGuard } from './guards/auth.guard';
+import {AdminComponent} from './admin/admin.component';
+
+import {ProfileComponent} from './profile/profile.component';
+import {ErrorComponent} from './error/error.component';
+import {NotFoundComponent} from './not-found/not-found.component';
+import {NgModule} from '@angular/core';
+import {HomeComponent} from './home/home.component';
+
+
 
 const routes: Routes = [
-  { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'warehouse', component: WarehouseComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'error', component: ErrorComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
-export const AppRoutingModule = RouterModule.forRoot(routes);
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

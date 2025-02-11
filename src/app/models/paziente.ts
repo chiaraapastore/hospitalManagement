@@ -1,9 +1,14 @@
 export interface Paziente {
-  id: number;
+  id?: number;
   nome: string;
   cognome: string;
   eta: number;
   diagnosi: string;
   email: string;
-  repartoId?: number;
+  reparto?: Department;
+}
+
+export interface Department {
+  id?: number;
+  nome: string;
 }
