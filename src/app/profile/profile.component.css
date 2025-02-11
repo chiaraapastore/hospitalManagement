@@ -1,0 +1,65 @@
+
+.background-blur {
+  position: fixed;
+  top: -11%;
+  left: -11%;
+  width: 115vw;
+  height: 115vh;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  overflow: hidden;
+}
+
+
+.profile-container {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+
+.profile-icon {
+  font-size: 6rem;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+
+.profile-details {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-details label {
+  font-size: 1.25rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+
+.profile-edit-icon {
+  font-size: 1.5rem;
+  color: #000;
+  margin-top: 30px;
+}
+
+.btn-link {
+  display: inline-block;
+  padding: 0;
+  position: relative;
+}

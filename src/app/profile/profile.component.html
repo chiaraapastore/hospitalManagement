@@ -1,0 +1,42 @@
+<div class="background-blur"></div>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="profile-container text-center" *ngIf="userDetails?.firstName; else loading">
+
+    <i class="bi bi-person-circle profile-icon"></i>
+
+    <h2>Dettaglio Profilo</h2>
+
+    <div class="profile-details">
+      <div class="mb-3">
+        <label><strong>Nome:</strong> {{ userDetails.firstName }}</label>
+      </div>
+      <div class="mb-3">
+        <label><strong>Cognome:</strong> {{ userDetails.lastName }}</label>
+      </div>
+      <div class="mb-3">
+        <label><strong>Email:</strong> {{ userDetails.email }}</label>
+      </div>
+      <div class="mb-3">
+        <label><strong>Ruolo:</strong> {{ userDetails.role }}</label>
+      </div>
+
+
+      <div *ngIf="errorMessage" class="error">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button class="btn btn-dark btn-lg" (click)="goToPatients()">
+        Lista dei miei pazienti
+        <i class="bi bi-box-seam"></i>
+      </button>
+    </div>
+
+  </div>
+
+
+  <ng-template #loading>
+    <div class="loading-message">
+      <p>Caricamento profilo...</p>
+    </div>
+  </ng-template>
+</div>
