@@ -20,30 +20,28 @@ export class AuthGuard implements CanActivate {
 
     try {
       const isAuthenticated = await this.keycloakService.isLoggedIn();
-      console.log('Utente autenticato:', isAuthenticated);
 
       if (!isAuthenticated) {
-        console.log('Utente non autenticato. Reindirizzo al login.');
         await this.keycloakService.login({ redirectUri: window.location.origin + state.url });
         return false;
       }
 
       const userRoles = this.keycloakService.getUserRoles();
-      console.log('Ruoli dell\'utente:', userRoles);
+
 
       const requiredRoles: string[] = route.data['roles'] || [];
-      console.log('Ruoli richiesti per accedere:', requiredRoles);
 
-      if (requiredRoles.some((role) => userRoles.includes(role))) {
-        console.log('Accesso consentito alla rotta:', state.url);
+
+      if (requiredRoles.length === 0 || requiredRoles.some((role) => userRoles.includes(role))) {
+
         return true;
       }
 
-      console.log('Accesso negato. Reindirizzo a /not-authorized.');
+
       this.router.navigate(['/not-authorized']);
       return false;
     } catch (error) {
-      console.error('Errore durante la verifica dei permessi:', error);
+
       this.router.navigate(['/error']);
       return false;
     }

@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   title = 'hospitalCare';
   userDetails: any;
   backgroundImage = "https://i.pinimg.com/736x/3e/45/d1/3e45d1580247e9aff0718387e5f6c7a8.jpg";
+  isLoggedIn: boolean = false;
 
   constructor(
     private router: Router,
@@ -29,14 +30,17 @@ export class AppComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    console.log('Ci sono?', this.keycloakService.isLoggedIn());
-    if (this.keycloakService.isLoggedIn()) {
+  async ngOnInit(): Promise<void> {
+    this.isLoggedIn = await this.keycloakService.isLoggedIn();
+    console.log(" Stato login:", this.isLoggedIn);
+
+    if (this.isLoggedIn) {
       this.getUserDetails();
       this.logUserRoles();
-      this.redirectAdmin();
+      await this.authService.redirectUserByRole();
     }
   }
+
 
   async goToUserProfile(): Promise<void> {
     try {

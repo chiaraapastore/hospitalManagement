@@ -1,27 +1,36 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
-  constructor(private keycloakService: KeycloakService) {}
 
-  async getLoggedInUser(): Promise<{ username?: string } | null> {
+export class AuthenticationService {
+  constructor(private keycloakService: KeycloakService, private router: Router) {}
+
+  async login(): Promise<void> {
     try {
-      const isAuthenticated = await this.keycloakService.isLoggedIn();
-      if (isAuthenticated) {
-        const keycloakInstance = this.keycloakService.getKeycloakInstance();
-        if (keycloakInstance && keycloakInstance.tokenParsed) {
-          const tokenParsed: any = keycloakInstance.tokenParsed;
-          const username = tokenParsed.preferred_username;
-          return { username };
-        }
-      }
-      return null;
+      await this.keycloakService.login();
+      await this.redirectUserByRole();
     } catch (error) {
-      console.error("Errore durante il recupero dell'utente loggato:", error);
-      return null;
+      console.error('Errore durante il login:', error);
+    }
+  }
+
+  async redirectUserByRole(): Promise<void> {
+    const isAuthenticated = await this.keycloakService.isLoggedIn();
+    if (isAuthenticated) {
+      const roles = this.keycloakService.getUserRoles();
+
+      if (roles.includes('admin')) {
+        this.router.navigate(['/admin']);
+      } else if (roles.includes('dottore')) {
+        this.router.navigate(['/dottore']);
+      } else if (roles.includes('capo-reparto')) {
+        this.router.navigate(['/capo-reparto']);
+      } else {
+        this.router.navigate(['/']);
+      }
     }
   }
 
