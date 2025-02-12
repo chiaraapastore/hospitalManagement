@@ -16,7 +16,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AdminComponent } from './admin/admin.component';
 import {PazientiComponent} from './patients/patients.component';
 import {NotFoundComponent} from './not-found/not-found.component';
-import {HomeComponent} from './home/home.component';
 
 export function initializeKeycloak(keycloak: KeycloakService, platformId: Object) {
   return () =>
@@ -31,14 +30,16 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
           initOptions: {
             onLoad: 'check-sso',
             checkLoginIframe: false,
-            silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-            redirectUri: window.location.origin
           },
         })
         .then(() => {
+          console.log('Sono dentro',keycloak.isLoggedIn());
+          console.log('Eccomi', keycloak.getToken());
           console.log('Keycloak inizializzato con successo');
         })
         .catch((err) => {
+          console.error('Sono dentro',keycloak.isLoggedIn());
+          console.error('Eccomi', keycloak.getToken());
           console.error('Errore inizializzazione Keycloak:', err);
         })
       : Promise.resolve();
@@ -55,7 +56,6 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     ErrorComponent,
     AdminComponent,
     NotFoundComponent,
-    HomeComponent,
   ],
   imports: [
     BrowserModule,

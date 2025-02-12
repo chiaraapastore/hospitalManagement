@@ -4,19 +4,18 @@ import {AdminComponent} from './admin/admin.component';
 
 import {ProfileComponent} from './profile/profile.component';
 import {ErrorComponent} from './error/error.component';
-import {NotFoundComponent} from './not-found/not-found.component';
 import {NgModule} from '@angular/core';
-import {HomeComponent} from './home/home.component';
+import {AppComponent} from './app.component';
 
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  {path:'home', component:AppComponent, canActivate: [AuthGuard], data: { role:['dottore'] }},
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'error', component: ErrorComponent },
-  { path: '**', component: NotFoundComponent }
 ];
 
 
