@@ -56,7 +56,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       { title: 'Epifania ', date: `${year}-01-06` },
       { title: 'Pasqua ', date: `${this.calculateEaster(year)}` },
       { title: 'Festa della Liberazione 🇮🇹', date: `${year}-04-25` },
-      { title: 'Festa del Lavoro 🛠️', date: `${year}-05-01` },
+      { title: 'Festa del Lavoro️', date: `${year}-05-01` },
       { title: 'Ferragosto ', date: `${year}-08-15` },
       { title: 'Natale ', date: `${year}-12-25` },
       { title: 'Santo Stefano ', date: `${year}-12-26` }
