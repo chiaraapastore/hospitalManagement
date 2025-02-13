@@ -1,0 +1,46 @@
+
+:host ::ng-deep .fc {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+
+:host ::ng-deep .fc-toolbar {
+  background-color: #008080;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+
+:host ::ng-deep .fc-button {
+  background-color: #008080;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+:host ::ng-deep .fc-button:hover {
+  background-color: #005f5f;
+}
+
+
+:host ::ng-deep .ferie-event {
+  background-color: #00a5a5 !important;
+  color: white !important;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  position: relative;
+}
+
+
+:host ::ng-deep .fc-day-today {
+  background-color: #e0f7fa !important;
+  border: 2px solid #008080;
+}

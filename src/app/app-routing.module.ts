@@ -7,7 +7,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {HeadOfDipartmentComponent} from './head-of-dipartment/head-of-dipartment.component';
 import {DoctorComponent} from './doctor/doctor.component';
-
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
 
@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'capo-reparto', component: HeadOfDipartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
   { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'calendario', component: CalendarComponent },
   { path: 'error', component: ErrorComponent },
 ];
 

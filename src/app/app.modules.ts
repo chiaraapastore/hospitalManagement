@@ -19,6 +19,8 @@ import {NotFoundComponent} from './not-found/not-found.component';
 import {NotificationService} from './services/notification.service';
 import { CommonModule } from '@angular/common';
 import {DoctorComponent} from './doctor/doctor.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import {CalendarComponent} from './calendar/calendar.component';
 
 export function initializeKeycloak(keycloak: KeycloakService, platformId: Object) {
   return () =>
@@ -59,13 +61,16 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     ErrorComponent,
     // AdminComponent,
     NotFoundComponent,
-    DoctorComponent
+    DoctorComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    CommonModule,
+    FullCalendarModule,
     KeycloakAngularModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
