@@ -13,9 +13,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { AdminComponent } from './admin/admin.component';
-import {PazientiComponent} from './patients/patients.component';
+// import { AdminComponent } from './admin/admin.component';
+// import {PazientiComponent} from './patients/patients.component';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {NotificationService} from './services/notification.service';
+import { CommonModule } from '@angular/common';
+import {DoctorComponent} from './doctor/doctor.component';
 
 export function initializeKeycloak(keycloak: KeycloakService, platformId: Object) {
   return () =>
@@ -52,10 +55,11 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
   declarations: [
     AppComponent,
     ProfileComponent,
-    PazientiComponent,
+    // PazientiComponent,
     ErrorComponent,
-    AdminComponent,
+    // AdminComponent,
     NotFoundComponent,
+    DoctorComponent
   ],
   imports: [
     BrowserModule,
@@ -72,10 +76,12 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
       closeButton: true,
       progressBar: true,
     }),
+    CommonModule
   ],
   providers: [
     provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi()),
+    NotificationService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

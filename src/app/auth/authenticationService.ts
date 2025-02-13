@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Router } from '@angular/router';
+import {Utente} from '../models/utente';
+import { Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthenticationService {
-  constructor(private keycloakService: KeycloakService, private router: Router) {}
+  private apiUrl = 'http://localhost:8081/api/utente/user-info';
+  constructor(private keycloakService: KeycloakService, private router: Router, private http: HttpClient) {}
 
   async login(): Promise<void> {
     try {
@@ -34,6 +40,14 @@ export class AuthenticationService {
     }
   }
 
+  getUserInfo(): Observable<Utente> {
+    return this.http.get<Utente>(this.apiUrl).pipe(
+      catchError((err: any) => {
+        console.error('Errore nel recupero delle informazioni utente:', err);
+        return throwError(() => new Error('Errore durante il recupero dell\'utente')); // ✅ throwError ora riconosciuto
+      })
+    );
+  }
 
 
   logout(): void {

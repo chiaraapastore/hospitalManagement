@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable, from } from 'rxjs';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { Observable, from, throwError } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { switchMap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
@@ -14,7 +14,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!isPlatformBrowser(this.platformId)) {
-
       return next.handle(req);
     }
 
@@ -29,9 +28,9 @@ export class AuthInterceptor implements HttpInterceptor {
           : req;
         return next.handle(clonedRequest);
       }),
-      catchError(error => {
+      catchError((error: HttpErrorResponse) => {
         console.error("Errore durante l'intercettazione della richiesta:", error);
-        return next.handle(req);
+        return throwError(() => new Error('Errore HTTP: ' + error.message));
       })
     );
   }

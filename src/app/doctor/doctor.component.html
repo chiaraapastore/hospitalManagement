@@ -1,3 +1,86 @@
-<h2>Benvenuto Dottore</h2>
-<p>Gestisci i tuoi pazienti e le somministrazioni.</p>
-<button (click)="authenticationService.logout()">Logout</button>
+<div class="dashboard-container">
+  <div class="top-bar">
+    <h2 class="title">Benvenuto Dottore, {{ doctorUsername }}</h2>
+    <div class="notifications-wrapper">
+      <div class="notifications" (click)="toggleDropdown($event)">
+        <i class="fas fa-bell"></i>
+      <span *ngIf="unreadNotifications > 0" class="notification-badge">{{ unreadNotifications }}</span>
+    </div>
+  </div>
+
+    <div class="notifications-dropdown" *ngIf="dropdownOpen">
+      <div class="dropdown-header">
+        <h3>Elenco Notifiche</h3>
+      </div>
+
+      <ul class="notifications-list">
+        <li *ngFor="let notification of notifications" [class.unread]="!notification.letta">
+          <div class="notification-content">
+            <p>{{ notification.messaggio }}</p>
+            <span class="time">{{ getRelativeTime(notification.dataOra) }}</span>
+          </div>
+          <button *ngIf="!notification.letta" class="mark-read-btn" (click)="markAsRead(notification.id, $event)">
+            ✔️
+          </button>
+        </li>
+      </ul>
+
+      <div class="notification-buttons">
+        <button class="mark-all-btn" (click)="markAllAsRead($event)">Segna come lette</button>
+        <button class="delete-all-btn" (click)="deleteAllNotifications($event)">Elimina tutte</button>
+      </div>
+    </div>
+  </div>
+
+
+<div class="sidebar">
+    <h3>Doctor</h3>
+    <ul>
+      <li><a href="#">Profilo</a></li>
+      <li><a href="#">Dati e Statistiche</a></li>
+      <li><a href="#">Calendario</a></li>
+    </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+
+  <div class="main-content">
+    <div class="stats-container">
+      <div class="stat-card" (click)="navigateTo('/pazienti')">
+        <i class="fas fa-user"></i>
+        <h3>Pazienti</h3>
+      </div>
+      <div class="stat-card" (click)="navigateTo('/medicinali')">
+        <i class="fas fa-pills"></i>
+        <h3>Medicinali in Magazzino</h3>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contattaci</h3>
+          <p><i class="fas fa-envelope" style="color: #004D40;"></i>
+            <a href="mailto:supporto@hospitalcare.it">supporto&#64;hospitalcare.it</a>
+          </p>
+          <p><i class="fas fa-phone" style="color: #004D40;"></i>
+            <a href="tel:+390123456789">+39 012 345 6789</a>
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Seguici</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f" style="color: #004D40;"></i></a>
+            <a href="#"><i class="fab fa-twitter" style="color: #004D40;"></i></a>
+            <a href="#"><i class="fab fa-instagram" style="color: #004D40;"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+      </div>
+    </div>
+  </footer>
+</div>
