@@ -8,7 +8,7 @@
 
 
 :host ::ng-deep .fc-toolbar {
-  background-color: #008080;
+  background-color: #00897b;
   color: white;
   padding: 10px;
   border-radius: 8px;
@@ -17,7 +17,7 @@
 
 
 :host ::ng-deep .fc-button {
-  background-color: #008080;
+  background-color: #00897b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -25,7 +25,7 @@
 }
 
 :host ::ng-deep .fc-button:hover {
-  background-color: #005f5f;
+  background-color: #00897bs;
 }
 
 
@@ -42,5 +42,23 @@
 
 :host ::ng-deep .fc-day-today {
   background-color: #e0f7fa !important;
-  border: 2px solid #008080;
+  border: 2px solid #00897b;
 }
+
+.back-button {
+  background-color: #00897b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  bottom: 30px;
+  transform: translateX(730%);
+}
+
+.back-button:hover {
+  background-color: #00796b;
+}
+

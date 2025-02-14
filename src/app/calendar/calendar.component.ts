@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
@@ -9,6 +10,7 @@ import interactionPlugin from '@fullcalendar/interaction';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+  constructor(private location: Location) {}
   private totalFerie = 28;
   private ferieEstive = 15;
   events: EventInput[] = [];
@@ -18,6 +20,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.updateEvents();
   }
 
+
+  goBack(): void {
+    this.location.back();
+  }
 
   private generateFerie(anno: number): EventInput[] {
     let ferie: EventInput[] = [];

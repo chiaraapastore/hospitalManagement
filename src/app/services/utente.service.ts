@@ -45,6 +45,12 @@ export class UtenteService {
     return this.http.put<Utente>(`${this.apiUrl}/utenti/${id}`, utenteDetails);
   }
 
+  uploadProfileImage(id: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}/upload-profile-image/${id}`, formData);
+  }
+
 
   deleteUtente(username: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/users/${username}`);

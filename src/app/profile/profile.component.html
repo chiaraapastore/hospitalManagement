@@ -1,42 +1,38 @@
-<div class="background-blur"></div>
-<div class="d-flex justify-content-center align-items-center min-vh-100">
-  <div class="profile-container text-center" *ngIf="userDetails?.firstName; else loading">
+<body>
+<button class="back-button" (click)="goBack()">Indietro</button>
+<div class="profile-container">
+  <div class="profile-header">
 
-    <i class="bi bi-person-circle profile-icon"></i>
-
-    <h2>Dettaglio Profilo</h2>
-
-    <div class="profile-details">
-      <div class="mb-3">
-        <label><strong>Nome:</strong> {{ userDetails.firstName }}</label>
-      </div>
-      <div class="mb-3">
-        <label><strong>Cognome:</strong> {{ userDetails.lastName }}</label>
-      </div>
-      <div class="mb-3">
-        <label><strong>Email:</strong> {{ userDetails.email }}</label>
-      </div>
-      <div class="mb-3">
-        <label><strong>Ruolo:</strong> {{ userDetails.role }}</label>
-      </div>
+    <label for="fileInput" class="profile-image-label">
+      <img [src]="userDetails?.profileImage" alt="Profile" class="profile-image" (click)="triggerFileInput()" />
+    </label>
 
 
-      <div *ngIf="errorMessage" class="error">
-        <p>{{ errorMessage }}</p>
-      </div>
+    <input type="file" id="fileInput" (change)="onFileSelected($event)" #fileInput hidden />
+  </div>
 
-      <button class="btn btn-dark btn-lg" (click)="goToPatients()">
-        Lista dei miei pazienti
-        <i class="bi bi-box-seam"></i>
-      </button>
-    </div>
+  <div class="profile-details">
+    <label><strong>Nome:</strong> <input type="text" [(ngModel)]="userDetails.firstName" /></label>
+    <label><strong>Cognome:</strong> <input type="text" [(ngModel)]="userDetails.lastName" /></label>
+    <label><strong>Email:</strong> <input type="email" [(ngModel)]="userDetails.email" /></label>
+    <label><strong>Matricola:</strong> <input type="text" [(ngModel)]="userDetails.numeroMatricola" /></label>
+    <label><strong>Telefono:</strong> <input type="text" [(ngModel)]="userDetails.telefono" /></label>
+    <label><strong>Reparto:</strong>
+      <input type="text" [value]="userDetails.nomeReparto" disabled />
+    </label>
+
+
+
 
   </div>
 
-
-  <ng-template #loading>
-    <div class="loading-message">
-      <p>Caricamento profilo...</p>
-    </div>
-  </ng-template>
+  <button class="btn btn-save" (click)="updateProfile()">Salva Modifiche</button>
 </div>
+
+</body>
+<footer>
+
+  <div class="footer-bottom">
+    <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+  </div>
+</footer>

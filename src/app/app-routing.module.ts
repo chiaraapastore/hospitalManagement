@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'dottore', component: DoctorComponent, canActivate: [AuthGuard], data: { roles: ['dottore'] } },
   { path: 'capo-reparto', component: HeadOfDipartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
-  { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'calendario', component: CalendarComponent },
   { path: 'error', component: ErrorComponent },
 ];
