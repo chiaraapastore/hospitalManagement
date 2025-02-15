@@ -6,19 +6,20 @@ import { KeycloakService } from 'keycloak-angular';
 import {NotificationService} from '../services/notification.service';
 import { Utente } from '../models/utente';
 import { HostListener } from '@angular/core';
+import {HeadOfDepartmentService} from '../services/head-of-department.service';
 
 
 
 @Component({
-  selector: 'app-doctor',
-  templateUrl: './doctor.component.html',
-  styleUrls: ['./doctor.component.css']
+  selector: 'app-head-of-department',
+  templateUrl: './head-of-department.component.html',
+  styleUrls: ['./head-of-department.component.css']
 })
-export class DoctorComponent implements OnInit {
+export class HeadOfDepartmentComponent implements OnInit {
   reparti: any[] = [];
   medicinali: any[] = [];
-  pazienti: any[] = [];
-  doctorUsername: string = '';
+  dottori: any[] = [];
+  headOfDepartmentUsername: string = '';
   unreadNotifications: number = 0;
   userId!: number;
   notifications: any[] = [];
@@ -29,13 +30,14 @@ export class DoctorComponent implements OnInit {
     public authenticationService: AuthenticationService,
     private router: Router,
     private keycloakService: KeycloakService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private headOfDepartmentService: HeadOfDepartmentService,
   ) {}
 
   ngOnInit() {
     this.caricaReparti();
-    this.caricaPazienti();
-    this.getDoctorUsername();
+    this.caricaDottori();
+    this.getHeadOfDepartmentUsername();
     this.listenForNewNotifications();
   }
 
@@ -45,18 +47,18 @@ export class DoctorComponent implements OnInit {
     });
   }
 
-  caricaPazienti() {
-    this.doctorService.getPazienti().subscribe((data: any[]) => {
-      this.pazienti = data;
+  caricaDottori() {
+    this.headOfDepartmentService.getDottori().subscribe((data: any[]) => {
+      this.dottori = data;
     });
   }
 
-  async getDoctorUsername() {
+  async getHeadOfDepartmentUsername() {
     try {
       const isLoggedIn = await this.keycloakService.isLoggedIn();
       if (isLoggedIn) {
         const userProfile = await this.keycloakService.loadUserProfile();
-        this.doctorUsername = userProfile.username || 'Dottore';
+        this.headOfDepartmentUsername = userProfile.username || 'Capo Reparto';
         this.getUnreadNotifications();
       }
     } catch (error) {
@@ -117,17 +119,6 @@ export class DoctorComponent implements OnInit {
     }
   }
 
-  getRelativeTime(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diff < 60) return `${diff} secondi fa`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} minuti fa`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} ore fa`;
-    return `${Math.floor(diff / 86400)} giorni fa`;
-  }
-
   listenForNewNotifications() {
     setInterval(() => {
       this.loadNotifications();
@@ -140,5 +131,17 @@ export class DoctorComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout();
+  }
+
+
+  getRelativeTime(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diff < 60) return `${diff} secondi fa`;
+    if (diff < 3600) return `${Math.floor(diff / 60)} minuti fa`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} ore fa`;
+    return `${Math.floor(diff / 86400)} giorni fa`;
   }
 }

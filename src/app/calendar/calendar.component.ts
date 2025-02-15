@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import {EventDialogComponent} from '../event-dialog/event-dialog.component';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
@@ -10,16 +12,17 @@ import { Location } from '@angular/common';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit, OnDestroy {
-  constructor(private location: Location) {}
+
+
+  constructor(public dialog: MatDialog, private location: Location) {}
   private totalFerie = 28;
   private ferieEstive = 15;
   events: EventInput[] = [];
   forceRerender = false;
-
   ngOnInit() {
     this.updateEvents();
+    this.initializeCalendar();
   }
-
 
   goBack(): void {
     this.location.back();
@@ -68,8 +71,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
       { title: 'Santo Stefano ', date: `${year}-12-26` }
     ];
   }
-
-
   private calculateEaster(year: number): string {
     let a = year % 19;
     let b = Math.floor(year / 100);
@@ -88,15 +89,60 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
-
   updateEvents(): void {
     this.events = this.generateEventsForYear(new Date().getFullYear());
-    this.calendarOptions.events = this.events;
+    if (this.calendarOptions) {
+      this.calendarOptions.events = this.events;
+    }
+  }
+
+  initializeCalendar(): void {
+    this.calendarOptions = {
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      events: this.events,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+      locale: 'it',
+      eventColor: '#008080',
+      eventTextColor: '#fff',
+      rerenderDelay: 100,
+      dateClick: this.handleDateClick.bind(this)
+    };
+  }
+
+  handleDateClick(info: any): void {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      width: '250px',
+      data: { date: info.dateStr }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addEvent(info.dateStr, result);
+      }
+    });
+  }
+
+  addEvent(date: string, title: string): void {
+    this.events = [...this.events, { title, date }];
+    this.updateCalendarEvents();
+  }
+
+  updateCalendarEvents(): void {
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: this.events
+    };
   }
 
   ngOnDestroy() {
     this.events = [];
   }
+
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],

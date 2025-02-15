@@ -25,7 +25,7 @@
 }
 
 :host ::ng-deep .fc-button:hover {
-  background-color: #00897bs;
+  background-color: #00897b;
 }
 
 
@@ -55,7 +55,7 @@
   cursor: pointer;
   margin-bottom: 10px;
   bottom: 30px;
-  transform: translateX(730%);
+  transform: translateX(900%);
 }
 
 .back-button:hover {

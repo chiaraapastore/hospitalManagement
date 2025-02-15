@@ -1,0 +1,66 @@
+<div class="dashboard-container">
+  <div class="top-bar">
+    <h2 class="title">Benvenuto Dottore {{ headOfDepartmentUsername }}</h2>
+    <div class="notifications-wrapper">
+      <div class="notifications" (click)="toggleDropdown($event)">
+        <i class="fas fa-bell"></i>
+        <span *ngIf="unreadNotifications > 0" class="notification-badge">{{ unreadNotifications }}</span>
+      </div>
+    </div>
+
+    <div class="notifications-dropdown" *ngIf="dropdownOpen">
+      <div class="dropdown-header">
+        <h3>Elenco Notifiche</h3>
+      </div>
+
+      <ul class="notifications-list">
+        <li *ngFor="let notification of notifications" [class.unread]="!notification.letta">
+          <div class="notification-content">
+            <p>{{ notification.messaggio }}</p>
+            <span class="time">{{ getRelativeTime(notification.dataOra) }}</span>
+          </div>
+          <button *ngIf="!notification.letta" class="mark-read-btn" (click)="markAsRead(notification.id, $event)">
+          </button>
+        </li>
+      </ul>
+
+      <div class="notification-buttons">
+        <button class="mark-all-btn" (click)="markAllAsRead($event)">Segna come lette</button>
+        <button class="delete-all-btn" (click)="deleteAllNotifications($event)">Elimina tutte</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sidebar">
+    <img src="https://i.pinimg.com/736x/d7/21/20/d7212055f559c6b02c183ddc8699fe4b.jpg" alt="Logo">
+    <ul>
+      <li><a routerLink="/profile">Profilo</a></li>
+
+      <li><a routerLink="/calendario">Calendario</a></li>
+    </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+
+  <div class="main-content">
+    <div class="stats-container">
+      <div class="stat-card" (click)="navigateTo('/dottori')">
+        <i class="fas fa-user"></i>
+        <h3>Dottori</h3>
+      </div>
+      <div class="stat-card" (click)="navigateTo('/magazzino')">
+        <i class="fas fa-pills"></i>
+        <h3>Medicinali in Magazzino</h3>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+
+    <div class="footer-bottom">
+      <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+</div>
