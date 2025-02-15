@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Somministra Medicina</h2>
+
+<mat-dialog-content class="dialog-content">
+
+  <mat-form-field class="full-width">
+    <mat-label>Seleziona Medicinale</mat-label>
+    <mat-select [(ngModel)]="selectedMedicinale">
+      <mat-option *ngFor="let medicinale of data.medicinali" [value]="medicinale">
+        <div class="option-content">
+          <span class="medicine-name">{{ medicinale.nome }}</span>
+          <span class="availability">(Disponibili: {{ medicinale.quantita }})</span>
+        </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field class="full-width">
+    <mat-label>Quantità</mat-label>
+    <input matInput type="number" [(ngModel)]="quantita" min="1" [max]="getMaxQuantity()" required>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Annulla</button>
+  <button mat-raised-button color="primary" (click)="confirm()"
+          [disabled]="!selectedMedicinale || quantita <= 0 || quantita > getMaxQuantity()">Conferma</button>
+</mat-dialog-actions>

@@ -1,0 +1,21 @@
+select {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  position: relative;
+  opacity: 1;
+}
+
+
+select option {
+  background-color: white;
+  color: black;
+}
+
+
+.dropdown-container {
+  position: relative;
+  z-index: 1;
+}
