@@ -33,6 +33,7 @@ import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocom
 import {WarehouseComponent} from './warehouse/warehouse.component';
 import {HeadOfDepartmentComponent} from './head-of-department/head-of-department.component';
 import {EventDialogComponent} from './event-dialog/event-dialog.component';
+import {CalendarHeadOfDepartmentComponent} from './calendar-head-of-department/calendar-head-of-department.component';
 
 
 
@@ -82,6 +83,7 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     WarehouseComponent,
     HeadOfDepartmentComponent,
     EventDialogComponent,
+    CalendarHeadOfDepartmentComponent,
   ],
   imports: [
     BrowserModule,
