@@ -30,6 +30,8 @@ import {MatOption} from "@angular/material/core";
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {WarehouseComponent} from './warehouse/warehouse.component';
+
 
 
 
@@ -75,6 +77,7 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     DoctorComponent,
     CalendarComponent,
     SomministraMedicinaDialogComponent,
+    WarehouseComponent,
   ],
   imports: [
     BrowserModule,

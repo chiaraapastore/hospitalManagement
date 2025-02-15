@@ -9,6 +9,7 @@ import {HeadOfDipartmentComponent} from './head-of-dipartment/head-of-dipartment
 import {DoctorComponent} from './doctor/doctor.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import {PatientsComponent} from './patients/patients.component';
+import {WarehouseComponent} from './warehouse/warehouse.component';
 
 const routes: Routes = [
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'capo-reparto', component: HeadOfDipartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
   { path: 'paziente', component: PatientsComponent, canActivate: [AuthGuard], data: { roles: ['dottore', 'capo-reparto'] } },
+  { path: 'magazzino', component: WarehouseComponent, canActivate: [AuthGuard], data: { roles: ['dottore'] } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'calendario', component: CalendarComponent },
   { path: 'error', component: ErrorComponent },

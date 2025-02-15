@@ -20,7 +20,27 @@ export class MedicinaleService {
     return this.http.get<Medicinale[]>(`${this.baseUrl}/disponibili`);
   }
 
+  getAllMedicinali(): Observable<Medicinale[]> {
+    return this.http.get<Medicinale[]>(`${this.baseUrl}`);
+  }
+
+  getMedicinaleById(id: number): Observable<Medicinale> {
+    return this.http.get<Medicinale>(`${this.baseUrl}/search/${id}`);
+  }
   updateQuantita(medicinaleId: number, quantita: number): Observable<Medicinale> {
     return this.http.put<Medicinale>(`${this.baseUrl}/${medicinaleId}/update-quantity`, quantita);
   }
+
+  updateMedicinale(medicinale: Medicinale) {
+    return this.http.put(`${this.baseUrl}/${medicinale.id}`, medicinale);
+  }
+
+  deleteMedicinale(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}/`);
+  }
+
+  checkReorderPoint(id: number): Observable<string> {
+    return this.http.get<string>(`${this.baseUrl}/${id}/check-reorder`);
+  }
+
 }

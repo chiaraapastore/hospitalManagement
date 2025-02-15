@@ -58,4 +58,13 @@ export class NotificationService {
   getNotifications(): Observable<any[]> {
     return this.notifications$;
   }
+
+  sendNotification(param: { messaggio: string; destinatario: string }) {
+    return this.http.post<void>(`${this.apiUrl}/invia`, param).pipe(
+      catchError((err: any) => {
+        console.error("Errore durante l'invio della notifica:", err);
+        return throwError(() => new Error("Errore durante l'invio della notifica"));
+      })
+    );
+  }
 }
