@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Aggiungi evento</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Nome dell'evento</mat-label>
+    <input matInput [(ngModel)]="eventTitle">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Annulla</button>
+  <button mat-button (click)="save()" cdkFocusInitial>Salva</button>
+</div>
