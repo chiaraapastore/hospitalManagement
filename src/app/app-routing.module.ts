@@ -8,6 +8,7 @@ import {AppComponent} from './app.component';
 import {HeadOfDipartmentComponent} from './head-of-dipartment/head-of-dipartment.component';
 import {DoctorComponent} from './doctor/doctor.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import {PatientsComponent} from './patients/patients.component';
 
 const routes: Routes = [
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'dottore', component: DoctorComponent, canActivate: [AuthGuard], data: { roles: ['dottore'] } },
   { path: 'capo-reparto', component: HeadOfDipartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
+  { path: 'paziente', component: PatientsComponent, canActivate: [AuthGuard], data: { roles: ['dottore', 'capo-reparto'] } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'calendario', component: CalendarComponent },
   { path: 'error', component: ErrorComponent },

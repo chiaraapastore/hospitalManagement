@@ -14,13 +14,24 @@ import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 // import { AdminComponent } from './admin/admin.component';
-// import {PazientiComponent} from './patients/patients.component';
+import { PatientsComponent } from './patients/patients.component';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {NotificationService} from './services/notification.service';
 import { CommonModule } from '@angular/common';
 import {DoctorComponent} from './doctor/doctor.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {CalendarComponent} from './calendar/calendar.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {SomministraMedicinaDialogComponent} from './somministra-medicina-dialog/somministra-medicina-dialog.component';
+import {MatOption} from "@angular/material/core";
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+
+
 
 export function initializeKeycloak(keycloak: KeycloakService, platformId: Object) {
   return () =>
@@ -57,12 +68,13 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
   declarations: [
     AppComponent,
     ProfileComponent,
-    // PazientiComponent,
+    PatientsComponent,
     ErrorComponent,
     // AdminComponent,
     NotFoundComponent,
     DoctorComponent,
-    CalendarComponent
+    CalendarComponent,
+    SomministraMedicinaDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +85,15 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     FullCalendarModule,
     KeycloakAngularModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    FormsModule,
+    MatButtonModule,
+    MatAutocompleteTrigger,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       toastClass: 'ngx-toastr',
@@ -81,7 +102,11 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
       closeButton: true,
       progressBar: true,
     }),
-    CommonModule
+    CommonModule,
+    MatOption,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+
   ],
   providers: [
     provideClientHydration(),

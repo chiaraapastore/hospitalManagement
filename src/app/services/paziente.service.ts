@@ -2,29 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Paziente} from '../models/paziente';
+import {environment} from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PazienteService {
-  private apiUrl = 'http://localhost:8080/api/pazienti';
+  private apiUrl = 'http://localhost:8081/api/pazienti';
 
   constructor(private http: HttpClient) {}
 
-  getAllPazienti(): Observable<Paziente[]> {
+  getPatients(): Observable<Paziente[]> {
     return this.http.get<Paziente[]>(`${this.apiUrl}/all`);
   }
 
-
-  getPazienteById(id: number): Observable<Paziente> {
-    return this.http.get<Paziente>(`${this.apiUrl}/search/${id}`);
+  getPatientsByDoctor(): Observable<Paziente[]> {
+    return this.http.get<Paziente[]>('http://localhost:8081/api/dottore/pazienti');
   }
 
-  savePaziente(paziente: Paziente): Observable<Paziente> {
-    return this.http.post<Paziente>(`${this.apiUrl}/save`, paziente);
+
+  downloadMedicalRecord(pazienteId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${pazienteId}/cartella-clinica`, {
+      responseType: 'blob'
+    });
   }
 
-  deletePaziente(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
-  }
 }

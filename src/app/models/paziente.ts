@@ -1,11 +1,13 @@
 export interface Paziente {
-  id?: number;
+  id: number;
   nome: string;
   cognome: string;
   eta: number;
   diagnosi: string;
   email: string;
   reparto?: Department;
+  dimesso:boolean;
+  dataRicovero: string | Date;
 }
 
 export interface Department {
