@@ -90,20 +90,6 @@ export class HeadOfDepartmentComponent implements OnInit {
   }
 
 
-
-  notifyDoctorOfNewPatient() {
-    if (!this.selectedRepartoId || !this.selectedPatientName) {
-      console.error('Seleziona un reparto e inserisci il nome del paziente.');
-      return;
-    }
-    this.notificationService.notifyNewPatient(this.selectedRepartoId, this.selectedPatientName, this.userId).subscribe(() => {
-      console.log(`Notifica inviata al dottore del reparto ${this.selectedRepartoId} per il paziente ${this.selectedPatientName}`);
-    }, error => {
-      console.error('Errore nell\invio della notifica:', error);
-    });
-  }
-
-
   markAsRead(notificationId: number, event: Event) {
     event.stopPropagation();
     this.notificationService.markNotificationAsRead(notificationId).subscribe(() => {
@@ -146,13 +132,6 @@ export class HeadOfDepartmentComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
-  }
-  navigateToDoctors() {
-    if (!this.selectedRepartoId) {
-      console.error("Nessun reparto selezionato!");
-      return;
-    }
-    this.router.navigate(['/dottori', this.selectedRepartoId]);
   }
 
   logout() {

@@ -8,7 +8,7 @@ export interface Dottore {
   ferie: boolean;
   turno?: string;
   repartoId: number;
-  matricola?: string;
+  matricola: string;
   showTurno?: boolean;
   showFerie?: boolean;
   showReparto?: boolean;

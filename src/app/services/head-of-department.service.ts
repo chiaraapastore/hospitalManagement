@@ -23,8 +23,10 @@ export class HeadOfDepartmentService {
     });
   }
 
-  inviaNotifica(repartoId: string, messaggio: string): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/notifica/${repartoId}`, messaggio);
+  inviaNotifica(repartoId: string, messaggio: string): Observable<any> {
+    const payload = { messaggio };
+    console.log("Invio notifica con payload:", payload);
+    return this.http.post<any>(`${this.apiUrl}/notifica/${repartoId}`, payload);
   }
 
   getDottori(): Observable<any[]> {

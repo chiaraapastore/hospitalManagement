@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HeadOfDepartmentService } from '../services/head-of-department.service';
 import { DoctorService } from '../services/doctor.service';
 import { Dottore } from '../models/dottore';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-doctors',
@@ -13,14 +14,18 @@ import { Dottore } from '../models/dottore';
 export class DoctorsComponent implements OnInit {
   dottori: Dottore[] = [];
   reparti: any[] = [];
+  userId!: number;
   ferieDisponibili: string[] = [];
+  selectedPatientName: string = '';
   selectedRepartoId!: number;
+  showNotificationForm: boolean = false;
   turni: string[] = ['Mattina', 'Pomeriggio', 'Notte', 'Monto', 'Smonto'];
   giorniSettimana: string[] = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
   turniAssegnati: { [key: number]: { [giorno: string]: string } } = {};
   constructor(
     private headOfDepartmentService: HeadOfDepartmentService,
     private doctorService: DoctorService,
+    private notificationService: NotificationService,
     private location: Location,
   ) {}
 
@@ -164,5 +169,33 @@ export class DoctorsComponent implements OnInit {
     };
     return colors[turno] || 'white';
   }
+
+  toggleNotificationForm() {
+    this.showNotificationForm = !this.showNotificationForm;
+  }
+
+  notifyDoctorOfNewPatient(): void {
+    if (!this.selectedRepartoId || !this.selectedPatientName.trim()) {
+      console.error("Seleziona un reparto e inserisci il nome del paziente.");
+      alert("Seleziona un reparto e inserisci il nome del paziente.");
+      return;
+    }
+
+    const messaggio = `Nuovo paziente: ${this.selectedPatientName} assegnato al reparto.`;
+    console.log("Payload inviato:", { messaggio });
+
+    this.headOfDepartmentService.inviaNotifica(this.selectedRepartoId.toString(), messaggio)
+      .subscribe({
+        next: () => {
+          console.log("Notifica inviata con successo.");
+          alert("Notifica inviata con successo ai dottori del reparto.");
+        },
+        error: (err) => {
+          console.error("Errore nell'invio della notifica:", err);
+          alert("Errore nell'invio della notifica.");
+        }
+      });
+  }
+
 
 }

@@ -70,6 +70,21 @@
     </table>
   </div>
 </div>
+<button class="notify-btn" (click)="toggleNotificationForm()">
+  Notifica Dottore - Nuovo Paziente
+</button>
+<div *ngIf="showNotificationForm" class="notification-form">
+  <label for="reparto">Seleziona Reparto:</label>
+  <select id="reparto" [(ngModel)]="selectedRepartoId">
+    <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
+  </select>
+
+  <label for="paziente">Nome Paziente:</label>
+  <input id="paziente" type="text" [(ngModel)]="selectedPatientName" placeholder="Inserisci nome paziente">
+</div>
+
+
+
 </body>
 <footer>
   <div class="footer-bottom">
