@@ -34,6 +34,7 @@ import {WarehouseComponent} from './warehouse/warehouse.component';
 import {HeadOfDepartmentComponent} from './head-of-department/head-of-department.component';
 import {EventDialogComponent} from './event-dialog/event-dialog.component';
 import {CalendarHeadOfDepartmentComponent} from './calendar-head-of-department/calendar-head-of-department.component';
+import {DoctorsComponent} from './doctors/doctors.component';
 
 
 
@@ -84,6 +85,7 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     HeadOfDepartmentComponent,
     EventDialogComponent,
     CalendarHeadOfDepartmentComponent,
+    DoctorsComponent,
   ],
   imports: [
     BrowserModule,

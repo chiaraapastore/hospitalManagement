@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {Dottore} from '../models/dottore';
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +27,9 @@ export class DoctorService {
   getPazienti(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/pazienti`);
   }
+
+  getDottoriByReparto(repartoId: number): Observable<Dottore[]> {
+    return this.http.get<Dottore[]>(`${this.apiUrl}/reparto/${repartoId}`);
+  }
+
 }

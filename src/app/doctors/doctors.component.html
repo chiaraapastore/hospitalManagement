@@ -1,0 +1,62 @@
+<body>
+<button class="back-button" (click)="goBack()">Indietro</button>
+
+<div class="container">
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>ID Dottore</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Email</th>
+        <th>Matricola</th>
+        <th>Azioni</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let dottore of dottori">
+        <td>{{ dottore.id }}</td>
+        <td>{{ dottore.firstName }}</td>
+        <td>{{ dottore.lastName }}</td>
+        <td>{{ dottore.email }}</td>
+        <td>{{ dottore.matricola }}</td>
+        <td>
+          <div class="dropdown-container">
+            <button class="action-btn" (click)="dottore.showReparto = !dottore.showReparto">
+              Cambia Reparto
+            </button>
+            <select *ngIf="dottore.showReparto" (change)="cambiaRepartoDottore(dottore.id, $event)">
+              <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
+            </select>
+          </div>
+
+
+          <div class="dropdown-container">
+            <button class="action-btn" (click)="dottore.showFerie = !dottore.showFerie">
+              Assegna Ferie
+            </button>
+            <select *ngIf="dottore.showFerie" (change)="assegnaFerie(dottore.id, $event)">
+              <option *ngFor="let ferie of ferieDisponibili" [value]="ferie">{{ ferie }}</option>
+            </select>
+          </div>
+          <button (click)="dottore.showTurno = !dottore.showTurno">Assegna Turno</button>
+
+          <select *ngIf="dottore.showTurno" (change)="assegnaTurno(dottore.id, $event)">
+            <option value="mattina">Mattina</option>
+            <option value="notte">Notte</option>
+            <option value="smonto">Smonto</option>
+            <option value="monto">Monto</option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+  </div>
+</footer>

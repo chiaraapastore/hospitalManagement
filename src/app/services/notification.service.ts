@@ -45,13 +45,14 @@ export class NotificationService {
   }
 
 
-  notifyNewPatient(doctorId: number, chiefId: number, patientName: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/new-patient`, { doctorId, chiefId, patientName });
+  notifyNewPatient(repartoId: number, patientName: string, chiefId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/new-patient`, null, {
+      params: { repartoId: repartoId.toString(), patientName: patientName, chiefId: chiefId.toString() },
+    });
   }
 
-
-  notifyDepartmentChange(userId: number, newDepartmentName: string, chiefId?: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/department-change`, { userId, newDepartmentName, chiefId });
+  getNotificationsForChief(chiefId: number): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.apiUrl}/capo-reparto/${chiefId}`);
   }
 
 

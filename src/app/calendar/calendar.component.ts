@@ -158,4 +158,5 @@ export class CalendarComponent implements OnInit, OnDestroy {
     eventTextColor: '#fff',
     rerenderDelay: 100
   };
+
 }

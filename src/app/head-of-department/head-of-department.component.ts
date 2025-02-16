@@ -4,7 +4,7 @@ import { AuthenticationService } from '../auth/authenticationService';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import {NotificationService} from '../services/notification.service';
-import { Utente } from '../models/utente';
+import { Notification } from '../models/notification';
 import { HostListener } from '@angular/core';
 import {HeadOfDepartmentService} from '../services/head-of-department.service';
 
@@ -22,8 +22,10 @@ export class HeadOfDepartmentComponent implements OnInit {
   headOfDepartmentUsername: string = '';
   unreadNotifications: number = 0;
   userId!: number;
-  notifications: any[] = [];
+  notifications: Notification[] = [];
   dropdownOpen: boolean = false;
+  selectedRepartoId!: number;
+  selectedPatientName: string = '';
 
   constructor(
     private doctorService: DoctorService,
@@ -41,6 +43,8 @@ export class HeadOfDepartmentComponent implements OnInit {
     this.listenForNewNotifications();
   }
 
+
+
   caricaReparti() {
     this.doctorService.visualizzaReferenzeReparto(1).subscribe((data: any[]) => {
       this.reparti = data;
@@ -48,7 +52,8 @@ export class HeadOfDepartmentComponent implements OnInit {
   }
 
   caricaDottori() {
-    this.headOfDepartmentService.getDottori().subscribe((data: any[]) => {
+    if (!this.selectedRepartoId) return;
+    this.doctorService.getDottoriByReparto(this.selectedRepartoId).subscribe((data: any[]) => {
       this.dottori = data;
     });
   }
@@ -75,12 +80,26 @@ export class HeadOfDepartmentComponent implements OnInit {
 
   loadNotifications() {
     if (!this.userId) return;
-    this.notificationService.getNotifications().subscribe({
-      next: (notifications) => {
-        this.notifications = notifications;
-        this.unreadNotifications = notifications.filter(n => !n.letta).length;
+    this.notificationService.getNotificationsForChief(this.userId).subscribe({
+      next: (notifications: any) => {
+        this.notifications = notifications as Notification[];
+        this.unreadNotifications = this.notifications.filter(n => n?.letta === false).length;
       },
-      error: (err) => console.error('Errore nel recupero notifiche:', err)
+      error: (err: any) => console.error('Errore nel recupero notifiche:', err)
+    });
+  }
+
+
+
+  notifyDoctorOfNewPatient() {
+    if (!this.selectedRepartoId || !this.selectedPatientName) {
+      console.error('Seleziona un reparto e inserisci il nome del paziente.');
+      return;
+    }
+    this.notificationService.notifyNewPatient(this.selectedRepartoId, this.selectedPatientName, this.userId).subscribe(() => {
+      console.log(`Notifica inviata al dottore del reparto ${this.selectedRepartoId} per il paziente ${this.selectedPatientName}`);
+    }, error => {
+      console.error('Errore nell\invio della notifica:', error);
     });
   }
 
@@ -127,6 +146,13 @@ export class HeadOfDepartmentComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+  }
+  navigateToDoctors() {
+    if (!this.selectedRepartoId) {
+      console.error("Nessun reparto selezionato!");
+      return;
+    }
+    this.router.navigate(['/dottori', this.selectedRepartoId]);
   }
 
   logout() {

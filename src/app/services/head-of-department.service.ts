@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeadOfDepartmentService {
-  private apiUrl = 'http://localhost:8080/api/capo-reparto';
-
+  private apiUrl = 'http://localhost:8081/api/capo-reparto';
+  private urlDottore = 'http://localhost:8081/api/dottore';
+  private urlUtente = 'http://localhost:8081/api/utente';
   constructor(private http: HttpClient) {}
 
   aggiornaScorteReparto(repartoId: number, medicinaId: number, nuovaQuantita: number): Observable<string> {
@@ -28,5 +29,37 @@ export class HeadOfDepartmentService {
 
   getDottori(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/dottori`);
+  }
+
+  getReparti(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/reparti`);
+  }
+
+
+  getFerieDisponibili(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/ferie-disponibili`);
+  }
+
+  cambiaReparto(doctorId: number, nuovoRepartoId: number): Observable<void> {
+    return this.http.put<void>(`${this.urlDottore}/cambia-reparto/${doctorId}/${nuovoRepartoId}`, {});
+  }
+
+  assegnaFerie(doctorId: number, dataFerie: string): Observable<void> {
+    return this.http.put<void>(`${this.urlDottore}/assegna-ferie/${doctorId}`, {}, {
+      params: { dataFerie: dataFerie }
+    });
+  }
+
+
+  assegnaTurno(doctorId: number, turno: string): Observable<void> {
+    return this.http.put<void>(`${this.urlDottore}/assegna-turno/${doctorId}`, {}, {
+      params: { turno: turno }
+    });
+  }
+
+  getUserInfo(): Observable<any> {
+    return this.http.get<any>(`${this.urlUtente}/user-info`).pipe(
+      tap(data => console.log("Dati utente ricevuti:", data))
+    );
   }
 }
