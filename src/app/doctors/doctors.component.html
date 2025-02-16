@@ -42,12 +42,28 @@
           </div>
           <button (click)="dottore.showTurno = !dottore.showTurno">Assegna Turno</button>
 
-          <select *ngIf="dottore.showTurno" (change)="assegnaTurno(dottore.id, $event)">
-            <option value="mattina">Mattina</option>
-            <option value="notte">Notte</option>
-            <option value="smonto">Smonto</option>
-            <option value="monto">Monto</option>
-          </select>
+          <button class="action-btn" (click)="toggleTurnoTable(dottore.id)">Assegna Turno</button>
+
+          <div *ngIf="dottore.showTurnoTable" class="turno-table">
+            <table>
+              <thead>
+              <tr>
+                <th>Giorno</th>
+                <th *ngFor="let turno of turni">{{ turno }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let giorno of giorniSettimana">
+                <td>{{ giorno }}</td>
+                <td *ngFor="let turno of turni"
+                    (click)="assegnaTurno(dottore.id, giorno, turno)"
+                    [ngStyle]="{'background-color': getTurnoColor(dottore.id, giorno, turno)}"
+                    class="turno-cell">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </td>
       </tr>
       </tbody>

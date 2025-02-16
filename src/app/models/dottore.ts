@@ -12,5 +12,6 @@ export interface Dottore {
   showTurno?: boolean;
   showFerie?: boolean;
   showReparto?: boolean;
+  showTurnoTable?: boolean;
   isCapoReparto: boolean;
 }

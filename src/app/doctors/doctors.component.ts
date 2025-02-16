@@ -15,7 +15,9 @@ export class DoctorsComponent implements OnInit {
   reparti: any[] = [];
   ferieDisponibili: string[] = [];
   selectedRepartoId!: number;
-
+  turni: string[] = ['Mattina', 'Pomeriggio', 'Notte', 'Monto', 'Smonto'];
+  giorniSettimana: string[] = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
+  turniAssegnati: { [key: number]: { [giorno: string]: string } } = {};
   constructor(
     private headOfDepartmentService: HeadOfDepartmentService,
     private doctorService: DoctorService,
@@ -123,17 +125,44 @@ export class DoctorsComponent implements OnInit {
     });
   }
 
-  assegnaTurno(doctorId: number, event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const turno = selectElement?.value || '';
-    if (!turno) {
-      console.error("Nessun turno selezionato!");
-      return;
-    }
-    console.log(`Assegnazione turno ${turno} al dottore con ID: ${doctorId}`);
-    this.headOfDepartmentService.assegnaTurno(doctorId, turno).subscribe(() => {
-      console.log("Turno aggiornato con successo");
+  toggleTurnoTable(doctorId: number) {
+    this.dottori.forEach(dottore => {
+      if (dottore.id === doctorId) {
+        dottore.showTurnoTable = !dottore.showTurnoTable;
+      } else {
+        dottore.showTurnoTable = false;
+      }
     });
+  }
+
+  assegnaTurno(doctorId: number, giorno: string, turno: string) {
+    if (!this.turniAssegnati[doctorId]) {
+      this.turniAssegnati[doctorId] = {};
+    }
+
+
+    if (this.turniAssegnati[doctorId][giorno] === turno) {
+      delete this.turniAssegnati[doctorId][giorno];
+    } else {
+      this.turniAssegnati[doctorId][giorno] = turno;
+    }
+
+    console.log(`Turni assegnati:`, this.turniAssegnati);
+  }
+
+  getTurnoColor(doctorId: number, giorno: string, turno: string): string {
+    return this.turniAssegnati[doctorId]?.[giorno] === turno ? this.getTurnoCssClass(turno) : 'transparent';
+  }
+
+  getTurnoCssClass(turno: string): string {
+    const colors: { [key: string]: string } = {
+      'Mattina': '#ffeb3b',
+      'Pomeriggio': '#ff9800',
+      'Notte': '#3f51b5',
+      'Monto': '#26a69a',
+      'Smonto': '#9e9e9e'
+    };
+    return colors[turno] || 'white';
   }
 
 }
