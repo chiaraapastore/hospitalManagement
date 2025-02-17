@@ -13,7 +13,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-// import { AdminComponent } from './admin/admin.component';
 import { PatientsComponent } from './patients/patients.component';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {NotificationService} from './services/notification.service';
@@ -35,9 +34,10 @@ import {HeadOfDepartmentComponent} from './head-of-department/head-of-department
 import {EventDialogComponent} from './event-dialog/event-dialog.component';
 import {CalendarHeadOfDepartmentComponent} from './calendar-head-of-department/calendar-head-of-department.component';
 import {DoctorsComponent} from './doctors/doctors.component';
-import {
-  WarehouseHeadOfDepartmentComponent
-} from './warehouse-head-of-department/warehouse-head-of-department.component';
+import {WarehouseHeadOfDepartmentComponent} from './warehouse-head-of-department/warehouse-head-of-department.component';
+import {AdminComponent} from './admin/admin.component';
+import {WarehouseAdminComponent} from './warehouse-admin/warehouse-admin.component';
+import {DoctorsAdminComponent} from './doctors-admin/doctors-admin.component';
 
 
 
@@ -79,10 +79,12 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     ProfileComponent,
     PatientsComponent,
     ErrorComponent,
-    // AdminComponent,
+    AdminComponent,
     NotFoundComponent,
     DoctorComponent,
     CalendarComponent,
+    WarehouseAdminComponent,
+    DoctorsAdminComponent,
     SomministraMedicinaDialogComponent,
     WarehouseComponent,
     WarehouseHeadOfDepartmentComponent,

@@ -1,0 +1,114 @@
+<body>
+<button class="back-button" (click)="goBack()">Indietro</button>
+
+<div class="container">
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Email</th>
+        <th>Matricola</th>
+        <th>Reparto</th>
+        <th>Ruolo</th>
+        <th>Azioni</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let dottore of dottori">
+        <td>{{ dottore.id }}</td>
+        <td>{{ dottore.firstName }}</td>
+        <td>{{ dottore.lastName }}</td>
+        <td>{{ dottore.email }}</td>
+        <td>{{ dottore.matricola }}</td>
+        <td>{{ dottore.reparto }}</td>
+        <td>Dottore</td>
+        <td>
+          <div class="dropdown-container">
+            <button class="action-btn" (click)="dottore.showReparto = !dottore.showReparto">
+              Cambia Reparto
+            </button>
+            <select *ngIf="dottore.showReparto" (change)="aggiungiDottoreAReparto(dottore.id, $event)">
+              <option *ngFor="let reparto of reparti" [value]="reparto.id">
+                {{ reparto.nome }}
+              </option>
+            </select>
+          </div>
+        </td>
+      </tr>
+
+
+      <tr *ngFor="let capoReparto of capoReparti">
+        <td>{{ capoReparto.id }}</td>
+        <td>{{ capoReparto.firstName }}</td>
+        <td>{{ capoReparto.lastName }}</td>
+        <td>{{ capoReparto.email }}</td>
+        <td>{{ capoReparto.matricola }}</td>
+        <td>{{ capoReparto.reparto }}</td>
+        <td>Capo Reparto</td>
+
+      <td>
+          <div class="dropdown-container">
+            <button class="action-btn" (click)="capoReparto.showReparto = !capoReparto.showReparto">
+              Cambia Reparto
+            </button>
+            <select *ngIf="capoReparto.showReparto" (change)="assegnaCapoReparto(capoReparto.id, $event)">
+              <option *ngFor="let reparto of reparti" [value]="reparto.id">
+                {{ reparto.nome }}
+              </option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-section">
+    <h3>Aggiungi Nuovo Reparto</h3>
+    <input type="text" [(ngModel)]="nuovoReparto" placeholder="Nome Reparto" />
+    <button class="action-btn" (click)="aggiungiReparto()">Aggiungi Reparto</button>
+  </div>
+
+  <div class="add-section">
+    <h3>Aggiungi Nuovo Dottore</h3>
+    <input type="text" [(ngModel)]="nuovoDottoreNome" placeholder="Nome" />
+    <input type="text" [(ngModel)]="nuovoDottoreCognome" placeholder="Cognome" />
+    <input type="text" [(ngModel)]="nuovoDottoreEmail" placeholder="Email" />
+
+
+    <select [(ngModel)]="nuovoDottoreRepartoNome">
+      <option *ngFor="let reparto of reparti" [value]="reparto.id">
+        {{ reparto.nome }}
+      </option>
+    </select>
+
+    <button class="action-btn" (click)="aggiungiDottore()">Aggiungi</button>
+  </div>
+
+
+
+  <div class="add-section">
+    <h3>Aggiungi Nuovo Capo Reparto</h3>
+    <input type="text" [(ngModel)]="nuovoCapoRepartoNome" placeholder="Nome" />
+    <input type="text" [(ngModel)]="nuovoCapoRepartoCognome" placeholder="Cognome" />
+    <input type="text" [(ngModel)]="nuovoCapoRepartoEmail" placeholder="Email" />
+
+    <select [(ngModel)]="nuovoCapoRepartoNomeReparto">
+      <option *ngFor="let reparto of reparti" [value]="reparto.id">
+        {{ reparto.nome }}
+      </option>
+    </select>
+
+    <button class="action-btn" (click)="aggiungiCapoReparto()">Aggiungi</button>
+  </div>
+</div>
+</body>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+  </div>
+</footer>

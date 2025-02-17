@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:8080/api/admin';
+  private apiUrl = 'http://localhost:8081/api/admin';
+  private urlUtente = 'http://localhost:8081/api/utente';
 
   constructor(private http: HttpClient) {}
 
@@ -27,5 +28,31 @@ export class AdminService {
       .set('utenteId', utenteId.toString())
       .set('repartoId', repartoId.toString());
     return this.http.post<string>(`${this.apiUrl}/assegna-capo-reparto`, null, { params });
+  }
+
+  getDottori(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/dottori`);
+  }
+
+  getReparti(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/reparti`);
+  }
+
+  getUserInfo(): Observable<string> {
+    return this.http.get<string>(`${this.urlUtente}/user-info`);
+  }
+
+  getCapoReparti(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/capo-reparti`);
+  }
+
+
+
+  creaDottore(param: { firstName: string; lastName: string; email: string }): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/crea-dottore`, param);
+  }
+
+  creaCapoReparto(param: { firstName: string; lastName: string; email: string }): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/crea-capo-reparto`, param);
   }
 }
