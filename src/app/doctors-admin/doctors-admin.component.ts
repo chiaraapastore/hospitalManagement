@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Dottore} from '../models/dottore';
 import {HeadOfDepartmentService} from '../services/head-of-department.service';
-import {DoctorService} from '../services/doctor.service';
 import {Location} from '@angular/common';
 import {AdminService} from '../services/admin.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-doctors-admin',
@@ -30,7 +29,7 @@ export class DoctorsAdminComponent implements OnInit{
   turniAssegnati: { [key: number]: { [giorno: string]: string } } = {};
 
 
-  constructor(private adminService: AdminService, private location: Location, private headOfDepartmentService: HeadOfDepartmentService, private doctorService: DoctorService) {}
+  constructor(private adminService: AdminService, private location: Location, private headOfDepartmentService: HeadOfDepartmentService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.caricaDati();
@@ -79,8 +78,22 @@ export class DoctorsAdminComponent implements OnInit{
 
 
   aggiungiReparto() {
-    this.adminService.creaReparto(this.nuovoReparto).subscribe();
+    if (!this.nuovoReparto.trim()) {
+      this.toastr.error("Il nome del reparto è obbligatorio!");
+      return;
+    }
+
+    this.adminService.aggiungiReparto(this.nuovoReparto).subscribe({
+      next: (response: any) => {
+        this.toastr.success(response.message || "Reparto aggiunto con successo!");
+        this.loadReparti();
+        this.nuovoReparto = "";
+      },
+      error: () => {
+      }
+    });
   }
+
 
   aggiungiCapoReparto() {
     if (!this.nuovoCapoRepartoNome || !this.nuovoCapoRepartoCognome || !this.nuovoCapoRepartoEmail || !this.nuovoCapoRepartoNomeReparto) {
@@ -107,29 +120,29 @@ export class DoctorsAdminComponent implements OnInit{
 
   aggiungiDottoreAReparto(dottoreId: number, event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    const repartoId = selectElement?.value || '';
+    const repartoId = parseInt(selectElement.value, 10); // Converte il valore della select in numero
 
-    if (!repartoId) {
-      console.error("Nessun reparto selezionato!");
+    if (isNaN(repartoId)) {
+      console.error("Errore: Nessun reparto selezionato o ID non valido!");
       return;
     }
 
-    const repartoIdNumber = parseInt(repartoId, 10);
-    if (isNaN(repartoIdNumber)) {
-      console.error("Errore: ID reparto non valido");
-      return;
-    }
+    const repartoSelezionato = this.reparti.find(rep => rep.id === repartoId);
+    const repartoNome = repartoSelezionato ? repartoSelezionato.nome : "Reparto sconosciuto";
 
-    console.log(`Assegnazione del dottore con ID: ${dottoreId} al reparto ${repartoIdNumber}`);
+    console.log(`Assegnazione del dottore con ID: ${dottoreId} al reparto ${repartoNome} (ID: ${repartoId})`);
 
-    this.adminService.aggiungiDottoreAReparto(dottoreId, repartoIdNumber).subscribe({
+    this.adminService.aggiungiDottoreAReparto(dottoreId, repartoId).subscribe({
       next: (message: string) => {
-        console.log(message);
+        console.log("Risposta del backend:", message);
         this.loadDottori();
       },
       error: (err: any) => console.error("Errore nell'assegnazione del dottore al reparto", err)
     });
   }
+
+
+
 
   assegnaCapoReparto(capoRepartoId: number, event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -256,6 +269,16 @@ export class DoctorsAdminComponent implements OnInit{
       'Smonto': '#9e9e9e'
     };
     return colors[turno] || 'white';
+  }
+
+  loadReparti() {
+    this.adminService.getReparti().subscribe({
+      next: (data: any[]) => {
+        this.reparti = data;
+        console.log("Lista reparti aggiornata:", this.reparti);
+      },
+      error: (err: any) => console.error("Errore nel caricamento dei reparti", err)
+    });
   }
 
 }
