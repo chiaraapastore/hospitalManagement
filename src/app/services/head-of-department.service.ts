@@ -59,9 +59,20 @@ export class HeadOfDepartmentService {
     });
   }
 
+
   getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.urlUtente}/user-info`).pipe(
       tap(data => console.log("Dati utente ricevuti:", data))
     );
+  }
+
+  aggiornaScorte(repartoId: number, medicinaId: number, nuovaQuantita: number): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/aggiorna-scorte/${repartoId}/${medicinaId}`, null, {
+      params: { nuovaQuantita: nuovaQuantita.toString() }
+    });
+  }
+
+  aggiungiFarmaco(medicinale: any): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/aggiungi-medicinale`, medicinale);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
 import { HeadOfDepartmentService } from '../services/head-of-department.service';
 import { DoctorService } from '../services/doctor.service';
 import { Dottore } from '../models/dottore';

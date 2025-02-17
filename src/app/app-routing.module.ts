@@ -12,6 +12,9 @@ import {WarehouseComponent} from './warehouse/warehouse.component';
 import {HeadOfDepartmentComponent} from './head-of-department/head-of-department.component';
 import {CalendarHeadOfDepartmentComponent} from './calendar-head-of-department/calendar-head-of-department.component';
 import {DoctorsComponent} from './doctors/doctors.component';
+import {
+  WarehouseHeadOfDepartmentComponent
+} from './warehouse-head-of-department/warehouse-head-of-department.component';
 
 const routes: Routes = [
 
@@ -22,6 +25,7 @@ const routes: Routes = [
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
   { path: 'paziente', component: PatientsComponent, canActivate: [AuthGuard], data: { roles: ['dottore', 'capo-reparto'] } },
   { path: 'magazzino', component: WarehouseComponent, canActivate: [AuthGuard], data: { roles: ['dottore'] } },
+  { path: 'magazzinoCapoReparto', component: WarehouseHeadOfDepartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'dottori', component: DoctorsComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto'] } },
   {path: 'calendarioHeadOfDepartment', component: CalendarHeadOfDepartmentComponent, canActivate: [AuthGuard], data: { roles: ['capo-reparto']}},

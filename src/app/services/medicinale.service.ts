@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Medicinale {
+  availableQuantity: number;
   id: number;
   nome: string;
   quantita: number;
@@ -27,13 +28,12 @@ export class MedicinaleService {
   getMedicinaleById(id: number): Observable<Medicinale> {
     return this.http.get<Medicinale>(`${this.baseUrl}/search/${id}`);
   }
-  updateQuantita(medicinaleId: number, quantita: number): Observable<Medicinale> {
-    return this.http.put<Medicinale>(`${this.baseUrl}/${medicinaleId}/update-quantity`, quantita);
+
+
+  updateMedicinale(id: number, medicinale: Medicinale): Observable<Medicinale> {
+    return this.http.put<Medicinale>(`${this.baseUrl}/${id}`, medicinale);
   }
 
-  updateMedicinale(medicinale: Medicinale) {
-    return this.http.put(`${this.baseUrl}/${medicinale.id}`, medicinale);
-  }
 
   deleteMedicinale(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}/`);
@@ -43,4 +43,7 @@ export class MedicinaleService {
     return this.http.get<string>(`${this.baseUrl}/${id}/check-reorder`);
   }
 
+  updateAvailableQuantity(id: number, availableQuantity: number): Observable<Medicinale> {
+    return this.http.put<Medicinale>(`${this.baseUrl}/${id}/update-available-quantity`, { availableQuantity });
+  }
 }
