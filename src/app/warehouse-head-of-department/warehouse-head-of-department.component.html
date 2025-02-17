@@ -81,6 +81,23 @@
           <button class="btn-save" (click)="aggiungiFarmaco()">Salva</button>
         </div>
 
+        <button class="btn btn-aqua" (click)="updateStockAndSendReport()">Aggiorna Stock e Invia Report</button>
+
+        <div *ngIf="showStockModal" class="modal">
+          <div class="modal-content">
+            <h2>Aggiorna Stock Magazzino</h2>
+
+            <label>Stock Disponibile:</label>
+            <input type="number" [(ngModel)]="magazine.stockDisponibile">
+
+            <label>Capienza Massima:</label>
+            <input type="number" [(ngModel)]="magazine.capienzaMassima">
+
+            <button class="btn btn-success" (click)="updateStockAndSendReport()">Salva e Invia Report</button>
+            <button class="btn btn-danger" (click)="showStockModal = false">Chiudi</button>
+          </div>
+        </div>
+
       </div>
 
 

@@ -16,6 +16,8 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
 
   medicinali: Medicinale[] = [];
   filteredMedicinali: Medicinale[] = [];
+  showStockModal: boolean = false;
+  magazine = { id: 1, stockDisponibile: 0, capienzaMassima: 0 };
   categorie: string[] = ['Tutti', 'Farmaci scaduti'];
   selectedCategory: string = 'Tutti';
   selectedRepartoId!: number;
@@ -233,11 +235,6 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
   }
 
 
-
-
-
-
-
   deleteMedicinale(medicinale: Medicinale): void {
     if (!medicinale.id) {
       console.error("Errore: ID farmaco non valido.");
@@ -263,5 +260,26 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
       }
     });
   }
+
+  openStockUpdateModal(): void {
+    this.showStockModal = true;
+  }
+
+  updateStockAndSendReport(): void {
+    console.log("Bottone premuto: aggiornamento stock e invio report in corso...");
+
+    this.medicinaleService.updateStockAndSendReport(this.magazine).subscribe({
+      next: () => {
+        this.toastr.success("Stock aggiornato e report inviato all'admin!");
+        console.log("Richiesta completata con successo!");
+      },
+      error: (err) => {
+        console.error("Errore nell'aggiornamento dello stock e nell'invio del report:", err);
+        this.toastr.error("Errore durante l'aggiornamento dello stock.");
+      }
+    });
+  }
+
+
 
 }
