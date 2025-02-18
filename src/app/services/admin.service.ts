@@ -35,7 +35,7 @@ export class AdminService {
     const params = new HttpParams()
       .set('utenteId', utenteId.toString())
       .set('repartoId', repartoId.toString());
-    return this.http.post<string>(`${this.apiUrl}/assegna-dottore-reparto/${utenteId}/${repartoId}`, null, { params });
+    return this.http.put<string>(`${this.apiUrl}/assegna-dottore-reparto/${utenteId}/${repartoId}`, null, { params });
   }
 
   assegnaCapoReparto(utenteId: number, repartoId: number): Observable<string> {
