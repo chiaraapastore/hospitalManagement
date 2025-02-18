@@ -38,6 +38,8 @@ import {WarehouseHeadOfDepartmentComponent} from './warehouse-head-of-department
 import {AdminComponent} from './admin/admin.component';
 import {WarehouseAdminComponent} from './warehouse-admin/warehouse-admin.component';
 import {DoctorsAdminComponent} from './doctors-admin/doctors-admin.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {DatiStatisticheComponent} from './dati-statistiche/dati-statistiche.component';
 
 
 
@@ -92,12 +94,14 @@ export function initializeKeycloak(keycloak: KeycloakService, platformId: Object
     EventDialogComponent,
     CalendarHeadOfDepartmentComponent,
     DoctorsComponent,
+    DatiStatisticheComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    NgxChartsModule,
     CommonModule,
     FullCalendarModule,
     KeycloakAngularModule,

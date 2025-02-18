@@ -1,0 +1,54 @@
+<body>
+
+<button class="back-button" (click)="goBack()">Indietro</button>
+<div class="dashboard-container">
+
+  <div class="chart">
+    <h3>Consumi dei Farmaci nel Tempo</h3>
+    <ngx-charts-line-chart
+      [view]="[700, 400]"
+      [results]="consumiNelTempo"
+      [scheme]="'cool'"
+      [legend]="true"
+      [animations]="true"
+      [xAxis]="true"
+      [yAxis]="true">
+    </ngx-charts-line-chart>
+  </div>
+
+  <div class="chart">
+    <h3>Riordini e Notifiche di Stockout</h3>
+    <ngx-charts-bar-vertical
+      [view]="[700, 400]"
+      [results]="riordiniStockout"
+      [scheme]="'cool'"
+      [legend]="true"
+      [animations]="true"
+      [xAxis]="true"
+      [yAxis]="true">
+    </ngx-charts-bar-vertical>
+  </div>
+
+  <div class="chart-container">
+  <h3>Distribuzione Consumi per Reparto</h3>
+  <ngx-charts-pie-chart
+    *ngIf="distribuzionePerReparto.length > 0"
+    [view]="[400, 400]"
+    [results]="distribuzionePerReparto"
+    [scheme]="'cool'"
+    [legend]="true"
+    [labels]="true"
+    [doughnut]="true"
+    [animations]="true">
+  </ngx-charts-pie-chart>
+  <p *ngIf="distribuzionePerReparto.length === 0">Nessun dato disponibile per il grafico.</p>
+</div>
+
+</div>
+</body>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+  </div>
+</footer>
