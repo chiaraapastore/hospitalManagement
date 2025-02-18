@@ -1,1 +1,138 @@
-<p>warehouse-admin works!</p>
+<body>
+<button class="back-button" (click)="goBack()">Indietro</button>
+<div class="background-blur"></div>
+<div class="container">
+  <div class="row">
+
+
+    <div class="filter-container">
+      <i class="bi bi-filter filter-icon"></i>
+      <div class="accordion-item">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center filter-item"
+              *ngFor="let categoria of categorie"
+              (click)="onCategorySelect(categoria)">
+            {{ categoria }}
+            <span class="badge filter-badge">{{ countByCategory(categoria) }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <div class="col-8">
+
+
+      <div class="search-container">
+        <form class="search-form" (ngSubmit)="searchMedicinali()">
+          <input type="text" [(ngModel)]="searchKeyword" name="searchKeyword" placeholder="Cerca..." class="search-input" required/>
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+
+
+      <div class="table-container">
+        <table>
+          <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Quantità</th>
+            <th>Data Scadenza</th>
+            <th>Azioni</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let medicinale of getMedicinaliForPage()">
+            <td>{{ medicinale.nome }}</td>
+            <td>{{ medicinale.categoria }}</td>
+            <td>{{ medicinale.quantita }} pz</td>
+            <td [ngClass]="{'text-danger': isExpired(medicinale.scadenza)}">{{ medicinale.scadenza | date:'dd/MM/yyyy' }}</td>
+            <input type="number" [(ngModel)]="medicinale.availableQuantity" class="form-control form-control-sm" (blur)="updateMedicinaleQuantity(medicinale)" />
+            <td>
+              <div class="action-buttons">
+                <button class="btn-action" (click)="editMedicinale(medicinale)">Modifica</button>
+                <button class="btn-action" (click)="deleteMedicinale(medicinale)">Elimina</button>
+              </div>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+        <div class="btn-container">
+          <button class="btn-add" (click)="toggleForm()">
+            <i class="fas fa-plus"></i>
+          </button></div>
+
+        <div *ngIf="showAddForm" class="add-medicine-form">
+          <input type="text" [(ngModel)]="newMedicinale.nome" placeholder="Nome farmaco">
+          <input type="number" [(ngModel)]="newMedicinale.quantita" min="1" placeholder="Quantità">
+          <input type="number" [(ngModel)]="newMedicinale.availableQuantity" min="1" placeholder="Disponibili">
+          <input type="date" [(ngModel)]="newMedicinale.scadenza" placeholder="Data Scadenza">
+          <input type="text" [(ngModel)]="newMedicinale.descrizione" placeholder="Descrizione">
+          <input type="text" [(ngModel)]="newMedicinale.categoria" placeholder="Categoria">
+          <input type="text" [(ngModel)]="newMedicinale.department" placeholder="Reparto">
+          <select [(ngModel)]="newMedicinale.magazine" class="form-select">
+            <option *ngFor="let mag of magazines" [ngValue]="mag">{{ mag.nome }}</option>
+          </select>
+          <button class="btn-save" (click)="aggiungiFarmaco()">Salva</button>
+        </div>
+
+
+        <div *ngIf="showStockModal" class="modal">
+          <div class="modal-content">
+            <h2>Aggiorna Stock Magazzino</h2>
+
+            <label>Stock Disponibile:</label>
+            <input type="number" [(ngModel)]="magazine.stockDisponibile">
+
+            <label>Capienza Massima:</label>
+            <input type="number" [(ngModel)]="magazine.capienzaMassima">
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="pagination-container mt-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="page === 1">
+              <button class="page-link" (click)="goToPreviousPage()" [disabled]="page === 1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </button>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">Pagina {{ page }} di {{ totalPages }}</span>
+            </li>
+            <li class="page-item" [class.disabled]="page >= totalPages">
+              <button class="page-link" (click)="goToNextPage()" [disabled]="page >= totalPages" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+        <div class="page-size-selector mt-3 text-center">
+          <label for="pageSizeSelect">Farmaci per pagina:</label>
+          <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)" class="form-select d-inline w-auto ms-2">
+            <option *ngFor="let size of tableSize" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<footer>
+
+  <div class="footer-bottom">
+    <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>
+  </div>
+</footer>

@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {EMPTY, Observable, tap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import {Magazine} from '../models/medicinale';
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +71,24 @@ export class AdminService {
 
   creaCapoReparto(param: { firstName: string; lastName: string; email: string }): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/crea-capo-reparto`, param);
+  }
+
+
+  getMagazzini(): Observable<Magazine[]> {
+    return this.http.get<Magazine[]>(`${this.apiUrl}/magazzini`);
+  }
+
+  aggiungiFarmaco(farmacoDaAggiungere: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/aggiungi-farmaco`, farmacoDaAggiungere)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = "Errore durante l'aggiunta del farmaco.";
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+          this.toastr.error(errorMessage);
+          return EMPTY;
+        })
+      );
   }
 }
