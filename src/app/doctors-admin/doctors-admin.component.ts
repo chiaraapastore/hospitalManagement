@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 import {AdminService} from '../services/admin.service';
 import {ToastrService} from 'ngx-toastr';
 import {HttpClient} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctors-admin',
@@ -14,8 +15,6 @@ export class DoctorsAdminComponent implements OnInit{
   dottori: any[] = [];
   capoReparti: any[] = [];
   reparti: any[] = [];
-  nuovoRepartoId!: number;
-  selectedRepartoId!: number;  // Dichiarazione della variabile
   nuovoReparto: string = '';
   nuovoDottoreNome: string = '';
   nuovoDottoreCognome: string = '';
@@ -25,7 +24,6 @@ export class DoctorsAdminComponent implements OnInit{
   nuovoCapoRepartoEmail: string = '';
   nuovoDottoreRepartoNome: string = '';
   nuovoCapoRepartoNomeReparto: string = '';
-  apiUrl = 'http://localhost:8081/api/admin';
 
   turni: string[] = ['Mattina', 'Pomeriggio', 'Notte', 'Monto', 'Smonto'];
   giorniSettimana: string[] = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
@@ -121,7 +119,7 @@ export class DoctorsAdminComponent implements OnInit{
       repartoNome: this.nuovoCapoRepartoNomeReparto
     };
 
-    console.log("🚀 Inviando capo reparto:", nuovoCapo);
+    console.log("Inviando capo reparto:", nuovoCapo);
 
     this.adminService.creaCapoReparto(nuovoCapo).subscribe({
       next: (response: any) => {
@@ -138,66 +136,47 @@ export class DoctorsAdminComponent implements OnInit{
       }
     });
   }
-
-
-
-  aggiungiDottoreAReparto(dottoreId: number, event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const repartoId = parseInt(selectElement.value, 10);
+  assegnaDottoreAReparto(utenteId: number, event: Event): void {
+    const repartoId = parseInt((event.target as HTMLSelectElement).value, 10);
 
     if (isNaN(repartoId)) {
-      console.error("Errore: Nessun reparto selezionato o ID non valido!");
+      this.toastr.error('Errore: Seleziona un reparto valido.');
       return;
     }
 
-    const repartoSelezionato = this.reparti.find(rep => rep.id === repartoId);
-    const repartoNome = repartoSelezionato ? repartoSelezionato.nome : "Reparto sconosciuto";
-
-    console.log(`Assegnazione del dottore con ID: ${dottoreId} al reparto ${repartoNome} (ID: ${repartoId})`);
-
-    this.adminService.aggiungiDottoreAReparto(dottoreId, repartoId).subscribe({
-      next: (message: string) => {
-        console.log("Risposta del backend:", message);
-        this.loadDottori();
-      },
-      error: (err: any) => console.error("Errore nell'assegnazione del dottore al reparto", err)
-    });
+    this.adminService.aggiungiDottoreAReparto(utenteId, repartoId)
+      .subscribe({
+        next: () => {
+          this.toastr.success('Dottore assegnato al reparto con successo!');
+          this.loadDottori();
+        },
+        error: (error: any) => {
+          console.error("Errore aggiornando il dottore nel reparto:", error);
+          this.toastr.error('Errore nell\'assegnazione del dottore al reparto.');
+        }
+      });
   }
 
-
-
-  assegnaCapoReparto(capoRepartoId: number, event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const repartoId = selectElement?.value ? parseInt(selectElement.value, 10) : NaN;
+  assegnaCapoReparto(utenteId: number, event: Event): void {
+    const repartoId = parseInt((event.target as HTMLSelectElement).value, 10);
 
     if (isNaN(repartoId)) {
-      console.error("Errore: ID reparto non valido o non selezionato!");
-      this.toastr.error("Errore: Seleziona un reparto valido!");
+      this.toastr.error('Errore: Seleziona un reparto valido.');
       return;
     }
 
-    console.log(`Assegnazione del capo reparto con ID: ${capoRepartoId} al reparto ${repartoId}`);
-
-    this.adminService.assegnaCapoReparto(capoRepartoId, repartoId).subscribe({
-      next: (message: string) => {
-        console.log("Risposta backend:", message);
-        this.toastr.success("Capo reparto assegnato con successo!");
-
-        this.capoReparti.forEach(capo => {
-          if (capo.id === capoRepartoId) {
-            capo.repartoNome = this.reparti.find(r => r.id === repartoId)?.nome || 'Sconosciuto';
-          }
-        });
-
-        this.loadCapoReparto();
-      },
-      error: (err: any) => {
-        console.error(" Errore nell'assegnazione del capo reparto:", err);
-        this.toastr.error("Errore nell'assegnazione del capo reparto.");
-      }
-    });
+    this.adminService.assegnaCapoReparto(utenteId, repartoId)
+      .subscribe({
+        next: () => {
+          this.toastr.success('Capo reparto assegnato con successo!');
+          this.loadCapoReparto();
+        },
+        error: (error: any) => {
+          console.error("Errore aggiornando il capo reparto:", error);
+          this.toastr.error('Errore nell\'aggiornamento del capo reparto.');
+        }
+      });
   }
-
 
 
   goBack(): void {
@@ -237,29 +216,18 @@ export class DoctorsAdminComponent implements OnInit{
       return;
     }
 
-    console.log(`Invio richiesta per cambiare reparto dell'utente ${utenteId} → Reparto ${repartoId}`);
-
-    this.adminService.assegnaCapoReparto(utenteId, repartoId)
+    this.adminService.aggiungiDottoreAReparto(utenteId, repartoId)
       .subscribe({
         next: () => {
           this.toastr.success('Reparto aggiornato con successo!');
-
-          const dottore = this.dottori.find(d => d.id === utenteId);
-          if (dottore) {
-            dottore.repartoNome = this.reparti.find(r => r.id === repartoId)?.nome || 'Sconosciuto';
-          }
-
-          console.log("Dottore aggiornato in frontend:", this.dottori);
-
           this.loadDottori();
         },
         error: (error: any) => {
-          console.error(" Errore aggiornando il reparto:", error);
+          console.error("Errore aggiornando il reparto:", error);
           this.toastr.error('Errore nell\'aggiornamento del reparto.');
         }
       });
   }
-
 
   toggleTurnoTable(doctorId: number) {
     this.dottori.forEach(dottore => {

@@ -33,7 +33,7 @@
               </select>
               <button (click)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">Cambia Reparto</button>
             </td>
-            <select *ngIf="dottore.showReparto" (change)="aggiungiDottoreAReparto(dottore.id, $event)">
+            <select *ngIf="dottore.showReparto" (change)="assegnaDottoreAReparto(dottore.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">
                 {{ reparto.nome }}
               </option>
@@ -58,9 +58,7 @@
               Cambia Reparto CapoReparto
             </button>
             <select *ngIf="capoReparto.showReparto" (change)="assegnaCapoReparto(capoReparto.id, $event)">
-              <option *ngFor="let reparto of reparti" [value]="reparto.id">
-                {{ reparto.nome }}
-              </option>
+              <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
             </select>
           </div>
         </td>
