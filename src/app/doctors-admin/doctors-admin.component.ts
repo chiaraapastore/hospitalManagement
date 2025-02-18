@@ -4,7 +4,6 @@ import {Location} from '@angular/common';
 import {AdminService} from '../services/admin.service';
 import {ToastrService} from 'ngx-toastr';
 import {HttpClient} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'app-doctors-admin',
@@ -229,21 +228,21 @@ export class DoctorsAdminComponent implements OnInit{
       });
   }
 
-  toggleTurnoTable(doctorId: number) {
-    this.dottori.forEach(dottore => {
-      if (dottore.id === doctorId) {
-        dottore.showTurnoTable = !dottore.showTurnoTable;
+  toggleTurnoTable(capoRepartoId: number) {
+    this.capoReparti.forEach(capo => {
+      if (capo.id === capoRepartoId) {
+        capo.showTurnoTable = !capo.showTurnoTable;
       } else {
-        dottore.showTurnoTable = false;
+        capo.showTurnoTable = false;
       }
     });
   }
+
 
   assegnaTurno(capoRepartoId: number, giorno: string, turno: string) {
     if (!this.turniAssegnati[capoRepartoId]) {
       this.turniAssegnati[capoRepartoId] = {};
     }
-
 
     if (this.turniAssegnati[capoRepartoId][giorno] === turno) {
       delete this.turniAssegnati[capoRepartoId][giorno];
@@ -251,7 +250,7 @@ export class DoctorsAdminComponent implements OnInit{
       this.turniAssegnati[capoRepartoId][giorno] = turno;
     }
 
-    console.log(`Turni assegnati:`, this.turniAssegnati);
+    console.log(`Turni assegnati per il Capo Reparto ID ${capoRepartoId}:`, this.turniAssegnati[capoRepartoId]);
   }
 
   getTurnoColor(capoRepartoId: number, giorno: string, turno: string): string {

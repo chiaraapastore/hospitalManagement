@@ -27,12 +27,10 @@
         <td>Dottore</td>
         <td>
           <div class="dropdown-container">
-            <td>
               <select #selectReparto (change)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">
                 <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
               </select>
               <button (click)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">Cambia Reparto</button>
-            </td>
             <select *ngIf="dottore.showReparto" (change)="assegnaDottoreAReparto(dottore.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">
                 {{ reparto.nome }}
@@ -57,10 +55,33 @@
             <button class="action-btn" (click)="capoReparto.showReparto = !capoReparto.showReparto">
               Cambia Reparto CapoReparto
             </button>
+
             <select *ngIf="capoReparto.showReparto" (change)="assegnaCapoReparto(capoReparto.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
             </select>
           </div>
+        <button class="action-btn" (click)="toggleTurnoTable(capoReparto.id)">Assegna Turno</button>
+
+        <div *ngIf="capoReparto.showTurnoTable" class="turno-table">
+          <table>
+            <thead>
+            <tr>
+              <th>Giorno</th>
+              <th *ngFor="let turno of turni">{{ turno }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let giorno of giorniSettimana">
+              <td>{{ giorno }}</td>
+              <td *ngFor="let turno of turni"
+                  (click)="assegnaTurno(capoReparto.id, giorno, turno)"
+                  [ngStyle]="{'background-color': getTurnoColor(capoReparto.id, giorno, turno)}"
+                  class="turno-cell">
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
         </td>
       </tr>
       </tbody>
