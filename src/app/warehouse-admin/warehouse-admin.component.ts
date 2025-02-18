@@ -17,15 +17,17 @@ export class WarehouseAdminComponent implements OnInit{
 
   medicinali: Medicinale[] = [];
   filteredMedicinali: Medicinale[] = [];
-  showStockModal: boolean = false;
-  magazine = { id: 1, stockDisponibile: 0, capienzaMassima: 0 };
+  emergenze: Medicinale[] = [];
+  storicoOrdini: any[] = [];
+  ordini: any[] = [];
+  reportConsumi: any[] = [];
+  newOrdine = { fornitore: '', materiale: '', quantita: 1 };
   categorie: string[] = ['Tutti', 'Farmaci scaduti'];
   selectedCategory: string = 'Tutti';
   selectedRepartoId!: number;
   searchKeyword: string = '';
   selectedSort: string = 'default';
   showAddForm = false;
-  sizeMedicinale: string = '';
   page: number = 1;
   pageSize: number = 5;
   tableSize: number[] = [5, 10, 20];
@@ -52,12 +54,42 @@ export class WarehouseAdminComponent implements OnInit{
   ngOnInit(): void {
     this.loadMedicinali();
     this.loadMagazines();
+    this.loadEmergenze();
+    this.loadOrdini();
+    this.loadReportConsumi();
+    this.loadStoricoOrdini();
   }
 
   loadMagazines(): void {
     this.adminService.getMagazzini().subscribe({
       next: (response) => this.magazines = response,
       error: (err) => console.error("Errore nel caricamento dei magazzini:", err)
+    });
+  }
+
+  loadStoricoOrdini(): void {
+    this.adminService.getStoricoOrdini().subscribe({
+      next: (response) => {
+        this.storicoOrdini = response;
+      },
+      error: (err) => console.error("Errore nel caricamento dello storico ordini:", err)
+    });
+  }
+
+  aggiornaStatoOrdine(ordineId: number, nuovoStato: string): void {
+    this.adminService.aggiornaStatoOrdine(ordineId, nuovoStato).subscribe({
+      next: () => {
+        this.toastr.success('Stato ordine aggiornato con successo!', 'Successo');
+
+        const ordineIndex = this.storicoOrdini.findIndex(o => o.id === ordineId);
+        if (ordineIndex !== -1) {
+          this.storicoOrdini[ordineIndex].stato = nuovoStato;
+        }
+      },
+      error: (err) => {
+        console.error('Errore nell\'aggiornamento dello stato ordine:', err);
+        this.toastr.error('Errore durante l\'aggiornamento dello stato.', 'Errore');
+      }
     });
   }
 
@@ -87,6 +119,48 @@ export class WarehouseAdminComponent implements OnInit{
       }
     });
   }
+
+  loadEmergenze(): void {
+    this.adminService.getEmergenze().subscribe({
+      next: (response) => this.emergenze = response,
+      error: (err) => console.error("Errore nel caricamento delle emergenze:", err)
+    });
+  }
+
+  loadOrdini(): void {
+    this.adminService.getOrdini().subscribe({
+      next: (response) => this.ordini = response,
+      error: (err) => console.error("Errore nel caricamento degli ordini:", err)
+    });
+  }
+
+  loadReportConsumi(): void {
+    this.adminService.getReportConsumi().subscribe({
+      next: (response) => this.reportConsumi = response,
+      error: (err) => console.error("Errore nel caricamento dei report:", err)
+    });
+  }
+
+  creaOrdine(): void {
+    if (!this.newOrdine.fornitore || !this.newOrdine.materiale || this.newOrdine.quantita <= 0) {
+      this.toastr.error('Compila tutti i campi!', 'Errore');
+      return;
+    }
+
+    this.adminService.creaOrdine(
+      this.newOrdine.fornitore
+    ).subscribe({
+      next: (ordineCreato) => {
+        this.toastr.success('Ordine creato con successo!', 'Successo');
+        this.storicoOrdini.unshift(ordineCreato); // Aggiunge il nuovo ordine in cima senza ricaricare
+      },
+      error: (err) => {
+        console.error('Errore nella creazione dell\'ordine:', err);
+        this.toastr.error('Errore durante la creazione dell\'ordine.', 'Errore');
+      }
+    });
+  }
+
 
   toggleForm(): void {
     this.showAddForm = !this.showAddForm;

@@ -3,7 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {EMPTY, Observable, tap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
-import {Magazine} from '../models/medicinale';
+import {Magazine, Medicinale} from '../models/medicinale';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class AdminService {
   assegnaCapoReparto(utenteId: number, repartoId: number): Observable<string> {
     return this.http.put<string>(
       `${this.apiUrl}/assegna-capo-reparto`,
-      { utenteId, repartoId }, // 🔥 Passiamo i parametri nel body
+      { utenteId, repartoId },
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -91,4 +91,31 @@ export class AdminService {
         })
       );
   }
+
+  getEmergenze(): Observable<Medicinale[]> {
+    return this.http.get<Medicinale[]>(`${this.apiUrl}/emergenze`);
+  }
+
+  getOrdini(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/ordini`);
+  }
+
+  getReportConsumi(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/report-consumi`);
+  }
+
+  creaOrdine(ordine: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/ordini`, ordine);
+  }
+
+  getStoricoOrdini(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/storico-ordini`);
+  }
+
+
+  aggiornaStatoOrdine(ordineId: number, stato: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/ordini/${ordineId}/stato`, { stato });
+  }
+
+
 }

@@ -82,24 +82,65 @@
           <button class="btn-save" (click)="aggiungiFarmaco()">Salva</button>
         </div>
 
+        <div class="layout-container">
+          <div class="top-section">
 
-        <div *ngIf="showStockModal" class="modal">
-          <div class="modal-content">
-            <h2>Aggiorna Stock Magazzino</h2>
+            <div class="ordini-container">
+              <div class="section-container">
+                <h3><i class="fas fa-truck"></i> Ordini ai Fornitori</h3>
+                <div class="order-form">
+                  <input type="text" [(ngModel)]="newOrdine.fornitore" placeholder="Fornitore">
+                  <input type="text" [(ngModel)]="newOrdine.materiale" placeholder="Materiale">
+                  <input type="number" [(ngModel)]="newOrdine.quantita" min="1" placeholder="Quantità">
+                  <button class="btn-save" (click)="creaOrdine()">Crea Ordine</button>
+                </div>
+              </div>
 
-            <label>Stock Disponibile:</label>
-            <input type="number" [(ngModel)]="magazine.stockDisponibile">
+              <div class="section-container">
+                <h3><i class="fas fa-clipboard-list"></i> Storico Ordini</h3>
+                <ul class="ordine-list">
+                  <li *ngFor="let ordine of storicoOrdini">
+                    <div>
+                      <li class="storico-ordini-item" style="color: white;">
+                      <strong><i class="fas fa-box"></i> {{ ordine.materiale }}</strong> -
+                      Fornitore: {{ ordine.fornitore }} - Quantità: {{ ordine.quantita }}
+                    </div>
+                    <select [(ngModel)]="ordine.stato" (change)="aggiornaStatoOrdine(ordine.id, ordine.stato)">
+                      <option value="IN_ATTESA">In Attesa</option>
+                      <option value="CONSEGNATO">Consegnato</option>
+                    </select>
+                  </li>
+                </ul>
+              </div>
 
-            <label>Capienza Massima:</label>
-            <input type="number" [(ngModel)]="magazine.capienzaMassima">
+              <div class="section-container materiali-container">
+                <h3><i class="fas fa-exclamation-triangle"></i> Materiali in Esaurimento</h3>
+                <ul class="styled-list">
+                  <li *ngFor="let emergenza of emergenze">
+                    {{ emergenza.nome }} - Disponibili: <strong>{{ emergenza.availableQuantity }}</strong>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
+
+            <div class="report-container">
+              <div class="section-container">
+                <h3><i class="fas fa-chart-bar"></i> Report Consumi</h3>
+                <ul class="styled-list">
+                  <li *ngFor="let report of reportConsumi">
+                    <strong>{{ report.reparto }}</strong> - Consumo: <strong>{{ report.consumo }}</strong> unità
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
-      </div>
 
 
-      <div class="pagination-container mt-4">
+
+        <div class="pagination-container mt-4">
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item" [class.disabled]="page === 1">
@@ -128,7 +169,7 @@
       </div>
     </div>
   </div>
-</div>
+  </div></div>
 </body>
 <footer>
 
