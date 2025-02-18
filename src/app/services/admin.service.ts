@@ -35,15 +35,17 @@ export class AdminService {
     const params = new HttpParams()
       .set('utenteId', utenteId.toString())
       .set('repartoId', repartoId.toString());
-    return this.http.post<string>(`${this.apiUrl}/aggiungi-dottore-reparto`, null, { params });
+    return this.http.post<string>(`${this.apiUrl}/assegna-dottore-reparto/${utenteId}/${repartoId}`, null, { params });
   }
 
   assegnaCapoReparto(utenteId: number, repartoId: number): Observable<string> {
-    const params = new HttpParams()
-      .set('utenteId', utenteId.toString())
-      .set('repartoId', repartoId.toString());
-    return this.http.post<string>(`${this.apiUrl}/assegna-capo-reparto`, null, { params });
+    return this.http.put<string>(
+      `${this.apiUrl}/assegna-capo-reparto`,
+      { utenteId, repartoId }, // 🔥 Passiamo i parametri nel body
+      { headers: { 'Content-Type': 'application/json' } }
+    );
   }
+
 
   getDottori(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/dottori`);
@@ -61,11 +63,10 @@ export class AdminService {
     return this.http.get<any[]>(`${this.apiUrl}/capo-reparti`);
   }
 
-
-
-  creaDottore(param: { firstName: string; lastName: string; email: string }): Observable<string> {
+  creaDottore(param: { firstName: string; lastName: string; email: string; repartoNome: string }): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/crea-dottore`, param);
   }
+
 
   creaCapoReparto(param: { firstName: string; lastName: string; email: string }): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/crea-capo-reparto`, param);

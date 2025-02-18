@@ -27,9 +27,12 @@
         <td>Dottore</td>
         <td>
           <div class="dropdown-container">
-            <button class="action-btn" (click)="dottore.showReparto = !dottore.showReparto">
-              Cambia Reparto
-            </button>
+            <td>
+              <select #selectReparto (change)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">
+                <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
+              </select>
+              <button (click)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">Cambia Reparto</button>
+            </td>
             <select *ngIf="dottore.showReparto" (change)="aggiungiDottoreAReparto(dottore.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">
                 {{ reparto.nome }}
@@ -52,7 +55,7 @@
       <td>
           <div class="dropdown-container">
             <button class="action-btn" (click)="capoReparto.showReparto = !capoReparto.showReparto">
-              Cambia Reparto
+              Cambia Reparto CapoReparto
             </button>
             <select *ngIf="capoReparto.showReparto" (change)="assegnaCapoReparto(capoReparto.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">
@@ -80,10 +83,11 @@
 
 
     <select [(ngModel)]="nuovoDottoreRepartoNome">
-      <option *ngFor="let reparto of reparti" [value]="reparto.id">
+      <option *ngFor="let reparto of reparti" [ngValue]="reparto.nome">
         {{ reparto.nome }}
       </option>
     </select>
+
 
     <button class="action-btn" (click)="aggiungiDottore()">Aggiungi</button>
   </div>
@@ -97,10 +101,11 @@
     <input type="text" [(ngModel)]="nuovoCapoRepartoEmail" placeholder="Email" />
 
     <select [(ngModel)]="nuovoCapoRepartoNomeReparto">
-      <option *ngFor="let reparto of reparti" [value]="reparto.id">
+      <option *ngFor="let reparto of reparti" [ngValue]="reparto.nome">
         {{ reparto.nome }}
       </option>
     </select>
+
 
     <button class="action-btn" (click)="aggiungiCapoReparto()">Aggiungi</button>
   </div>
