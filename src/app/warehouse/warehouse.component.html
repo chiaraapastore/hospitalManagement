@@ -6,7 +6,6 @@
 
 
     <div class="filter-container">
-      <i class="bi bi-filter filter-icon"></i>
       <div class="accordion-item">
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center filter-item"
@@ -33,8 +32,8 @@
         </form>
       </div>
 
-      <button class="notify-button" (click)="notifyExpiredMedicines()">
-        Segnala Farmaci Scaduti
+      <button class="btn-alert">
+        <i class="fas fa-exclamation-triangle"></i> Segnala Farmaci Scaduti
       </button>
 
 
@@ -57,34 +56,32 @@
             </tr>
           </tbody>
         </table>
-      </div>
-
-
-      <div class="pagination-container mt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="page === 1">
-              <button class="page-link" (click)="goToPreviousPage()" [disabled]="page === 1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </button>
-            </li>
-            <li class="page-item disabled">
-              <span class="page-link">Pagina {{ page }} di {{ totalPages }}</span>
-            </li>
-            <li class="page-item" [class.disabled]="page >= totalPages">
-              <button class="page-link" (click)="goToNextPage()" [disabled]="page >= totalPages" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-        <div class="page-size-selector mt-3 text-center">
-          <label for="pageSizeSelect">Farmaci per pagina:</label>
-          <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)" class="form-select d-inline w-auto ms-2">
-            <option *ngFor="let size of tableSize" [value]="size">
-              {{ size }}
-            </option>
-          </select>
+        <div class="pagination-container">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="page === 1">
+                <button class="page-link" (click)="goToPreviousPage()" [disabled]="page === 1" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">Pagina {{ page }} di {{ totalPages }}</span>
+              </li>
+              <li class="page-item" [class.disabled]="page >= totalPages">
+                <button class="page-link" (click)="goToNextPage()" [disabled]="page >= totalPages" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div class="page-size-selector mt-3 text-center">
+            <label for="pageSizeSelect">Farmaci per pagina:</label>
+            <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)" class="form-select d-inline w-auto ms-2">
+              <option *ngFor="let size of tableSize" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

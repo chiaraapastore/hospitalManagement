@@ -16,6 +16,7 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
 
   medicinali: Medicinale[] = [];
   filteredMedicinali: Medicinale[] = [];
+  magazines: Magazine[] = [];
   showStockModal: boolean = false;
   magazine = { id: 1, stockDisponibile: 0, capienzaMassima: 0 };
   categorie: string[] = ['Tutti', 'Farmaci scaduti'];
@@ -49,6 +50,7 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadMedicinali();
+    this.loadMagazines();
   }
 
   loadMedicinali(): void {
@@ -73,6 +75,13 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
       error: (err) => {
         console.error("Errore nel caricamento dei medicinali:", err);
       }
+    });
+  }
+
+  loadMagazines(): void {
+    this.headOfDepartmentService.getMagazzini().subscribe({
+      next: (response) => this.magazines = response,
+      error: (err) => console.error("Errore nel caricamento dei magazzini:", err)
     });
   }
 

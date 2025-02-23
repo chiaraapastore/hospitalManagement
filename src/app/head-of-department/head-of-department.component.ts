@@ -80,7 +80,7 @@ export class HeadOfDepartmentComponent implements OnInit {
 
   loadNotifications() {
     if (!this.userId) return;
-    this.notificationService.getNotificationsForChief(this.userId).subscribe({
+    this.notificationService.getNotifications().subscribe({
       next: (notifications: any) => {
         this.notifications = notifications as Notification[];
         this.unreadNotifications = this.notifications.filter(n => n?.letta === false).length;
@@ -90,16 +90,10 @@ export class HeadOfDepartmentComponent implements OnInit {
   }
 
 
-  markAsRead(notificationId: number, event: Event) {
-    event.stopPropagation();
-    this.notificationService.markNotificationAsRead(notificationId).subscribe(() => {
-      this.loadNotifications();
-    });
-  }
 
   markAllAsRead(event: Event) {
     event.stopPropagation();
-    this.notificationService.markAllNotificationsAsRead(this.userId).subscribe(() => {
+    this.notificationService.markAllNotificationsAsRead().subscribe(() => {
       this.loadNotifications();
     });
   }

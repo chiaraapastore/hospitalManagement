@@ -22,27 +22,25 @@
         <td>{{ dottore.email }}</td>
         <td>{{ dottore.matricola }}</td>
         <td>
-          <div class="dropdown-container">
-            <button class="action-btn" (click)="dottore.showReparto = !dottore.showReparto">
-              Cambia Reparto
+          <div class="action-group">
+            <button class="action-btn" title="Cambio Reparto" (click)="dottore.showReparto = !dottore.showReparto">
+              <i class="fas fa-sync-alt"></i>
             </button>
             <select *ngIf="dottore.showReparto" (change)="cambiaRepartoDottore(dottore.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
             </select>
-          </div>
 
-
-          <div class="dropdown-container">
-            <button class="action-btn" (click)="dottore.showFerie = !dottore.showFerie">
-              Assegna Ferie
+            <button class="action-btn" title="Assegna Ferie"(click)="dottore.showFerie = !dottore.showFerie">
+              <i class="fas fa-calendar-check"></i>
             </button>
             <select *ngIf="dottore.showFerie" (change)="assegnaFerie(dottore.id, $event)">
               <option *ngFor="let ferie of ferieDisponibili" [value]="ferie">{{ ferie }}</option>
             </select>
-          </div>
-          <button (click)="dottore.showTurno = !dottore.showTurno">Assegna Turno</button>
 
-          <button class="action-btn" (click)="toggleTurnoTable(dottore.id)">Assegna Turno</button>
+            <button class="action-btn" title="Assegna Turno" (click)="toggleTurnoTable(dottore.id)">
+              <i class="fas fa-user-clock"></i>
+            </button>
+          </div>
 
           <div *ngIf="dottore.showTurnoTable" class="turno-table">
             <table>
@@ -70,9 +68,17 @@
     </table>
   </div>
 </div>
-<button class="notify-btn" (click)="toggleNotificationForm()">
-  Notifica Dottore - Nuovo Paziente
-</button>
+
+<div class="notification-container">
+  <button class="notify-btn" title="Avvisa Dottore" (click)="toggleNotificationForm()">
+    <i class="fas fa-exclamation-circle"></i>
+  </button>
+</div>
+
+
+
+
+
 <div *ngIf="showNotificationForm" class="notification-form">
   <label for="reparto">Seleziona Reparto:</label>
   <select id="reparto" [(ngModel)]="selectedRepartoId">
@@ -82,10 +88,8 @@
   <label for="paziente">Nome Paziente:</label>
   <input id="paziente" type="text" [(ngModel)]="selectedPatientName" placeholder="Inserisci nome paziente">
 </div>
-
-
-
 </body>
+
 <footer>
   <div class="footer-bottom">
     <p>© 2025 HospitalCare. Tutti i diritti riservati.</p>

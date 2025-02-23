@@ -6,7 +6,6 @@
 
 
     <div class="filter-container">
-      <i class="bi bi-filter filter-icon"></i>
       <div class="accordion-item">
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center filter-item"
@@ -41,7 +40,7 @@
           <tr>
             <th>Nome</th>
             <th>Categoria</th>
-            <th>Quantità</th>
+            <th>Quantità disponibile in magazzino</th>
             <th>Data Scadenza</th>
             <th>Azioni</th>
           </tr>
@@ -50,25 +49,64 @@
           <tr *ngFor="let medicinale of getMedicinaliForPage()">
             <td>{{ medicinale.nome }}</td>
             <td>{{ medicinale.categoria }}</td>
-            <td>{{ medicinale.quantita }} pz</td>
-            <td [ngClass]="{'text-danger': isExpired(medicinale.scadenza)}">{{ medicinale.scadenza | date:'dd/MM/yyyy' }}</td>
-            <input type="number" [(ngModel)]="medicinale.availableQuantity" class="form-control form-control-sm" (blur)="updateMedicinaleQuantity(medicinale)" />
+            <td>
+              <input
+                type="number"
+                [(ngModel)]="medicinale.availableQuantity"
+                class="form-control form-control-sm"
+                (blur)="updateMedicinaleQuantity(medicinale)" />
+            </td>
+            <td [ngClass]="{'text-danger': isExpired(medicinale.scadenza)}">
+              {{ medicinale.scadenza | date:'dd/MM/yyyy' }}
+            </td>
             <td>
               <div class="action-buttons">
-                <button class="btn-action" (click)="editMedicinale(medicinale)">Modifica</button>
-                <button class="btn-action" (click)="deleteMedicinale(medicinale)">Elimina</button>
+                <button class="btn-icon edit-btn" (click)="editMedicinale(medicinale)">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn-icon delete-btn" (click)="deleteMedicinale(medicinale)">
+                  <i class="fas fa-trash"></i>
+                </button>
               </div>
             </td>
-
           </tr>
           </tbody>
         </table>
-        <div class="btn-container">
-          <button class="btn-add" (click)="toggleForm()">
-            <i class="fas fa-plus"></i>
-          </button></div>
 
-        <div *ngIf="showAddForm" class="add-medicine-form">
+        <div class="pagination-container">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="page === 1">
+                <button class="page-link" (click)="goToPreviousPage()" [disabled]="page === 1" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">Pagina {{ page }} di {{ totalPages }}</span>
+              </li>
+              <li class="page-item" [class.disabled]="page >= totalPages">
+                <button class="page-link" (click)="goToNextPage()" [disabled]="page >= totalPages" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div class="page-size-selector mt-3 text-center">
+            <label for="pageSizeSelect">Farmaci per pagina:</label>
+            <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)" class="form-select d-inline w-auto ms-2">
+              <option *ngFor="let size of tableSize" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn-add-medicine" (click)="toggleForm()">Aggiungi Farmaco</button>
+      </div>
+
+      <div *ngIf="showAddForm" class="add-medicine-form">
           <input type="text" [(ngModel)]="newMedicinale.nome" placeholder="Nome farmaco">
           <input type="number" [(ngModel)]="newMedicinale.quantita" min="1" placeholder="Quantità">
           <input type="number" [(ngModel)]="newMedicinale.availableQuantity" min="1" placeholder="Disponibili">
@@ -92,19 +130,17 @@
                   <input type="text" [(ngModel)]="newOrdine.fornitore" placeholder="Fornitore">
                   <input type="text" [(ngModel)]="newOrdine.materiale" placeholder="Materiale">
                   <input type="number" [(ngModel)]="newOrdine.quantita" min="1" placeholder="Quantità">
-                  <button class="btn-save" (click)="creaOrdine()">Crea Ordine</button>
+                  <div class="btn-container">
+                  <button class="btn-save" (click)="creaOrdine()"><i class="fas fa-plus"></i></button></div>
                 </div>
               </div>
 
               <div class="section-container">
                 <h3><i class="fas fa-clipboard-list"></i> Storico Ordini</h3>
                 <ul class="ordine-list">
-                  <li *ngFor="let ordine of storicoOrdini">
-                    <div>
-                      <li class="storico-ordini-item" style="color: white;">
-                      <strong><i class="fas fa-box"></i> {{ ordine.materiale }}</strong> -
+                  <li *ngFor="let ordine of storicoOrdini" class="storico-ordini-item" style="color: black;">
+                      <strong> {{ ordine.materiale }}</strong> -
                       Fornitore: {{ ordine.fornitore }} - Quantità: {{ ordine.quantita }}
-                    </div>
                     <select [(ngModel)]="ordine.stato" (change)="aggiornaStatoOrdine(ordine.id, ordine.stato)">
                       <option value="IN_ATTESA">In Attesa</option>
                       <option value="CONSEGNATO">Consegnato</option>
@@ -137,39 +173,9 @@
           </div>
         </div>
 
-
-
-
-        <div class="pagination-container mt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="page === 1">
-              <button class="page-link" (click)="goToPreviousPage()" [disabled]="page === 1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </button>
-            </li>
-            <li class="page-item disabled">
-              <span class="page-link">Pagina {{ page }} di {{ totalPages }}</span>
-            </li>
-            <li class="page-item" [class.disabled]="page >= totalPages">
-              <button class="page-link" (click)="goToNextPage()" [disabled]="page >= totalPages" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-        <div class="page-size-selector mt-3 text-center">
-          <label for="pageSizeSelect">Farmaci per pagina:</label>
-          <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)" class="form-select d-inline w-auto ms-2">
-            <option *ngFor="let size of tableSize" [value]="size">
-              {{ size }}
-            </option>
-          </select>
-        </div>
-      </div>
     </div>
   </div>
-  </div></div>
+  </div>
 </body>
 <footer>
 

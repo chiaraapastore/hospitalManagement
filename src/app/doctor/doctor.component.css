@@ -285,11 +285,13 @@ footer {
   height: 50px;
 }
 
-
-
 .footer-bottom {
   text-align: center;
   font-size: 0.6rem;
-  padding: 3px 0;
+  padding: 3px 10px;
   width: 100%;
+  position: relative;
+  top: 10px;
+  left: 10%;
+
 }

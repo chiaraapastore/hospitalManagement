@@ -84,9 +84,8 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 70px;
 }
-
 
 
 .footer-bottom {
@@ -94,6 +93,7 @@ footer {
   font-size: 0.6rem;
   padding: 3px 0;
   width: 100%;
+  margin-top: 20px;
 }
 
 .back-button {

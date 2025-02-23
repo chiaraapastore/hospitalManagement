@@ -64,7 +64,7 @@ export class CalendarHeadOfDepartmentComponent  implements OnInit, OnDestroy {
       { title: 'Capodanno ', date: `${year}-01-01` },
       { title: 'Epifania ', date: `${year}-01-06` },
       { title: 'Pasqua ', date: `${this.calculateEaster(year)}` },
-      { title: 'Festa della Liberazione 🇮🇹', date: `${year}-04-25` },
+      { title: 'Festa della Liberazione', date: `${year}-04-25` },
       { title: 'Festa del Lavoro️', date: `${year}-05-01` },
       { title: 'Ferragosto ', date: `${year}-08-15` },
       { title: 'Natale ', date: `${year}-12-25` },
@@ -110,7 +110,8 @@ export class CalendarHeadOfDepartmentComponent  implements OnInit, OnDestroy {
       eventColor: '#008080',
       eventTextColor: '#fff',
       rerenderDelay: 100,
-      dateClick: this.handleDateClick.bind(this)
+      dateClick: this.handleDateClick.bind(this),
+      eventClick: this.handleEventClick.bind(this)
     };
   }
 
@@ -127,10 +128,23 @@ export class CalendarHeadOfDepartmentComponent  implements OnInit, OnDestroy {
     });
   }
 
+  handleEventClick(info: any): void {
+    const confirmDelete = confirm(`Vuoi eliminare l'evento "${info.event.title}" in data ${info.event.startStr}?`);
+    if (confirmDelete) {
+      this.deleteEvent(info.event.startStr, info.event.title);
+    }
+  }
+
   addEvent(date: string, title: string): void {
     this.events = [...this.events, { title, date }];
     this.updateCalendarEvents();
   }
+
+  deleteEvent(date: string, title: string): void {
+    this.events = this.events.filter(event => !(event.date === date && event.title === title));
+    this.updateCalendarEvents();
+  }
+
 
   updateCalendarEvents(): void {
     this.calendarOptions = {

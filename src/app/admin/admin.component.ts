@@ -74,16 +74,10 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  markAsRead(notificationId: number, event: Event) {
-    event.stopPropagation();
-    this.notificationService.markNotificationAsRead(notificationId).subscribe(() => {
-      this.loadNotifications();
-    });
-  }
 
   markAllAsRead(event: Event) {
     event.stopPropagation();
-    this.notificationService.markAllNotificationsAsRead(this.userId).subscribe(() => {
+    this.notificationService.markAllNotificationsAsRead().subscribe(() => {
       this.loadNotifications();
     });
   }

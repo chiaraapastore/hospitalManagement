@@ -29,8 +29,14 @@
             </span>
         </td>
         <td>
-          <button (click)="downloadMedicalRecord(patient.id)">Scarica Cartella Clinica</button>
-          <button *ngIf="!patient.dimesso" (click)="somministraMedicina(patient.id)">Somministra Medicina</button>
+          <div class="action-group">
+            <button class="action-btn" title="Scarica Cartella Clinica" (click)="downloadMedicalRecord(patient.id)">
+              <i class="fas fa-file-download"></i>
+            </button>
+            <button class="action-btn" title="Somministra medicina" *ngIf="!patient.dimesso" (click)="somministraMedicina(patient.id)">
+              <i class="fas fa-pills"></i>
+            </button>
+          </div>
         </td>
       </tr>
       </tbody>

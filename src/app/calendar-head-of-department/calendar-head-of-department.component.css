@@ -55,7 +55,7 @@
   cursor: pointer;
   margin-bottom: 10px;
   bottom: 30px;
-  transform: translateX(900%);
+  transform: translateX(800%);
 }
 
 .back-button:hover {

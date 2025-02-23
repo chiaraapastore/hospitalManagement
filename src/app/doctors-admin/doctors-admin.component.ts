@@ -88,6 +88,11 @@ export class DoctorsAdminComponent implements OnInit{
 
   }
 
+  toggleSelect(dottore: any): void {
+    this.dottori.forEach(d => d.showReparto = false);
+    dottore.showReparto = !dottore.showReparto;
+  }
+
 
   aggiungiReparto() {
     if (!this.nuovoReparto.trim()) {

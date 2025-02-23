@@ -27,14 +27,12 @@
         <td>Dottore</td>
         <td>
           <div class="dropdown-container">
-              <select #selectReparto (change)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">
-                <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
-              </select>
-              <button (click)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">Cambia Reparto</button>
-            <select *ngIf="dottore.showReparto" (change)="assegnaDottoreAReparto(dottore.id, $event)">
-              <option *ngFor="let reparto of reparti" [value]="reparto.id">
-                {{ reparto.nome }}
-              </option>
+            <button class="btn-icon" title="Cambia Turno" (click)="toggleSelect(dottore)">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+
+            <select *ngIf="dottore.showReparto" #selectReparto (change)="cambiaReparto(dottore.id, parseInt(selectReparto.value, 10))">
+              <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
             </select>
           </div>
         </td>
@@ -52,15 +50,18 @@
 
       <td>
           <div class="dropdown-container">
-            <button class="action-btn" (click)="capoReparto.showReparto = !capoReparto.showReparto">
-              Cambia Reparto CapoReparto
+            <button class="action-btn" title="Cambia Turno"(click)="capoReparto.showReparto = !capoReparto.showReparto" class="btn-icon">
+              <i class="fas fa-sync-alt"></i>
             </button>
+            <button class="btn-icon" title="Assegna Turno" (click)="toggleTurnoTable(capoReparto.id)">
+              <i class="fas fa-user-clock"></i>
+            </button>
+
 
             <select *ngIf="capoReparto.showReparto" (change)="assegnaCapoReparto(capoReparto.id, $event)">
               <option *ngFor="let reparto of reparti" [value]="reparto.id">{{ reparto.nome }}</option>
             </select>
           </div>
-        <button class="action-btn" (click)="toggleTurnoTable(capoReparto.id)">Assegna Turno</button>
 
         <div *ngIf="capoReparto.showTurnoTable" class="turno-table">
           <table>
@@ -90,12 +91,17 @@
   <div class="add-container">
   <div class="add-section">
     <h3>Aggiungi Nuovo Reparto</h3>
+    <div class="input">
     <input type="text" [(ngModel)]="nuovoReparto" placeholder="Nome Reparto" />
-    <button class="action-btn" (click)="aggiungiReparto()">Aggiungi Reparto</button>
+    <button class="btn-icon-aggiungi" (click)="aggiungiReparto()">
+      <i class="fas fa-plus"></i>
+    </button>
+      </div>
   </div>
 
   <div class="add-section">
     <h3>Aggiungi Nuovo Dottore</h3>
+    <div class="input">
     <input type="text" [(ngModel)]="nuovoDottoreNome" placeholder="Nome" />
     <input type="text" [(ngModel)]="nuovoDottoreCognome" placeholder="Cognome" />
     <input type="text" [(ngModel)]="nuovoDottoreEmail" placeholder="Email" />
@@ -108,13 +114,17 @@
     </select>
 
 
-    <button class="action-btn" (click)="aggiungiDottore()">Aggiungi</button>
+    <button class="btn-icon-aggiungi" (click)="aggiungiDottore()">
+      <i class="fas fa-plus"></i>
+    </button>
+   </div>
   </div>
 
 
 
   <div class="add-section">
     <h3>Aggiungi Nuovo Capo Reparto</h3>
+    <div class="input">
     <input type="text" [(ngModel)]="nuovoCapoRepartoNome" placeholder="Nome" />
     <input type="text" [(ngModel)]="nuovoCapoRepartoCognome" placeholder="Cognome" />
     <input type="text" [(ngModel)]="nuovoCapoRepartoEmail" placeholder="Email" />
@@ -126,7 +136,10 @@
     </select>
 
 
-    <button class="action-btn" (click)="aggiungiCapoReparto()">Aggiungi</button>
+    <button class="btn-icon-aggiungi" (click)="aggiungiCapoReparto()">
+      <i class="fas fa-plus"></i>
+    </button>
+   </div>
   </div>
   </div>
 </div>

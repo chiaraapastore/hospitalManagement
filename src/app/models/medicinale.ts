@@ -9,7 +9,6 @@ export interface Medicinale {
   availableQuantity: number;
   department?: Department;
   magazine?: Magazine;
-
 }
 
 export interface Department {

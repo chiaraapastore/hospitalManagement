@@ -37,8 +37,11 @@ footer {
 .footer-bottom {
   text-align: center;
   font-size: 0.6rem;
-  padding: 3px 0;
+  padding: 3px 10px;
   width: 100%;
+  position: relative;
+  top: 6px;
+  left: 5%
 }
 
 .back-button {
@@ -58,3 +61,41 @@ footer {
 .back-button:hover {
   background-color: #38a3a5;;
 }
+::ng-deep ngx-charts-legend {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  width: 150% !important;
+  max-width: 1200px !important;
+  height: auto !important;
+  margin-left: 100px !important;
+}
+
+::ng-deep .legend-wrap {
+  width: 150% !important;
+  max-width: 150% !important;
+}
+
+::ng-deep .legend-labels {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 150% !important;
+}
+
+::ng-deep .legend-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 150% !important;
+}
+
+::ng-deep .legend-label-text {
+  font-size: 14px !important;
+  white-space: nowrap !important;
+  min-width: 220px !important;
+  max-width: 350px !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+

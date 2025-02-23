@@ -110,7 +110,7 @@ export class WarehouseAdminComponent implements OnInit{
           scadenza: m.scadenza || '',
           categoria: m.categoria || 'Sconosciuto',
           puntoRiordino: m.puntoRiordino ?? 0,
-          availableQuantity: m.availableQuantity ?? m.quantita
+          availableQuantity: m.availableQuantity ?? m.quantita,
         }));
         this.applyFilters();
       },
@@ -321,6 +321,8 @@ export class WarehouseAdminComponent implements OnInit{
       }
     });
   }
+
+
 
 
 }

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
+import {Magazine} from '../models/medicinale';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeadOfDepartmentService {
   private apiUrl = 'http://localhost:8081/api/capo-reparto';
+  private apiAdmin = 'http://localhost:8081/api/admin';
   private urlDottore = 'http://localhost:8081/api/dottore';
   private urlUtente = 'http://localhost:8081/api/utente';
   constructor(private http: HttpClient) {}
@@ -74,5 +76,9 @@ export class HeadOfDepartmentService {
 
   aggiungiFarmaco(medicinale: any): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/aggiungi-medicinale`, medicinale);
+  }
+
+  getMagazzini(): Observable<Magazine[]> {
+    return this.http.get<Magazine[]>(`${this.apiAdmin}/magazzini`);
   }
 }
