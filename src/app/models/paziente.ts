@@ -1,3 +1,5 @@
+import {Utente} from './utente';
+
 export interface Paziente {
   id: number;
   nome: string;
@@ -13,4 +15,5 @@ export interface Paziente {
 export interface Department {
   id?: number;
   nome: string;
+  capoReparto:Utente;
 }

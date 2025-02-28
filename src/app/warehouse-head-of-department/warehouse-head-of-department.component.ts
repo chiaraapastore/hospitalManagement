@@ -164,30 +164,6 @@ export class WarehouseHeadOfDepartmentComponent implements OnInit{
     return this.medicinali.filter(m => m.categoria === category).length;
   }
 
-  notifyExpiredMedicines(): void {
-    let expiredMedicines = this.medicinali.filter(m => this.isExpired(m.scadenza));
-
-    if (expiredMedicines.length === 0) {
-      this.toastr.info('Nessun farmaco scaduto da segnalare.');
-      return;
-    }
-
-    let report = 'Segnalazione Farmaci Scaduti\n\n';
-    expiredMedicines.forEach(m => {
-      report += `- ${m.nome} (Scaduto il ${m.scadenza})\n`;
-    });
-
-    this.notificationService.sendNotification({
-      destinatario: 'admin',
-      messaggio: report
-    }).subscribe(() => {
-      this.toastr.success('Notifica inviata all\'admin.');
-    }, (error: any) => {
-      console.error('Errore nell\'invio della notifica:', error);
-      this.toastr.error('Errore durante l\'invio della segnalazione.');
-    });
-  }
-
 
 
   goToPreviousPage(): void {

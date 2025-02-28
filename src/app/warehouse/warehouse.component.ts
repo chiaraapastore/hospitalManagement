@@ -4,6 +4,9 @@ import {MedicinaleService} from '../services/medicinale.service';
 import {ToastrService} from 'ngx-toastr';
 import {NotificationService} from '../services/notification.service';
 import {Location} from '@angular/common';
+import {DoctorService} from '../services/doctor.service';
+import {AuthenticationService} from '../auth/authenticationService';
+import {Department} from '../models/utente';
 
 @Component({
   selector: 'app-warehouse',
@@ -25,7 +28,7 @@ export class WarehouseComponent implements OnInit {
   @Inject(PLATFORM_ID) private platformId: Object
   ;
 
-  constructor(private medicinaleService: MedicinaleService, private toastr: ToastrService,private location: Location, private notificationService: NotificationService, @Inject(PLATFORM_ID) platformId: Object
+  constructor(private auth:AuthenticationService, private medicinaleService: MedicinaleService,private doctorService: DoctorService, private toastr: ToastrService,private location: Location, private notificationService: NotificationService, @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.platformId = platformId;
   }
@@ -59,6 +62,34 @@ export class WarehouseComponent implements OnInit {
     });
   }
 
+  async farmaciScaduti(): Promise<void> {
+    const user = await this.auth.getLoggedInUser();
+    const username = user?.username || 'Email non disponibile';
+    this.doctorService.getRepartoByEmailDottore(username).subscribe({
+      next: (reparto) => {
+        const capoReparto = reparto.capoReparto.id;
+
+        const farmaciScaduti = this.medicinali.filter(m => this.isExpired(m.scadenza));
+
+
+        if (farmaciScaduti.length === 0) {
+          this.toastr.info("Nessun farmaco scaduto da segnalare", "Info");
+          return;
+        }
+
+        farmaciScaduti.forEach(farmaco => {
+          this.doctorService.scadenzaFarmaco(capoReparto, farmaco.id).subscribe({
+            next: () => {
+              this.toastr.success(`Segnalazione inviata per ${farmaco.nome}`, "Successo");
+            },
+            error: (err) => {
+              this.toastr.error(`Errore nella segnalazione di ${farmaco.nome}: ${err.message}`, "Errore");
+            }
+          });
+        });
+      }
+    });
+  }
 
   applyFilters(): void {
     this.filteredMedicinali = this.medicinali.filter(m => {
@@ -110,29 +141,6 @@ export class WarehouseComponent implements OnInit {
     return this.medicinali.filter(m => m.categoria === category).length;
   }
 
-  notifyExpiredMedicines(): void {
-    let expiredMedicines = this.medicinali.filter(m => this.isExpired(m.scadenza));
-
-    if (expiredMedicines.length === 0) {
-      this.toastr.info('Nessun farmaco scaduto da segnalare.');
-      return;
-    }
-
-    let report = 'Segnalazione Farmaci Scaduti\n\n';
-    expiredMedicines.forEach(m => {
-      report += `- ${m.nome} (Scaduto il ${m.scadenza})\n`;
-    });
-
-    this.notificationService.sendNotification({
-      destinatario: 'capo-reparto',
-      messaggio: report
-    }).subscribe(() => {
-      this.toastr.success('Notifica inviata al capo reparto.');
-    }, (error: any) => {
-      console.error('Errore nell\'invio della notifica:', error);
-      this.toastr.error('Errore durante l\'invio della segnalazione.');
-    });
-  }
 
 
   goToPreviousPage(): void {

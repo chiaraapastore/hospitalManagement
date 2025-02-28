@@ -1,3 +1,5 @@
+import {Utente} from './utente';
+
 export interface Medicinale {
   id: number;
   nome: string;
@@ -14,6 +16,7 @@ export interface Medicinale {
 export interface Department {
   id: number;
   nome: string;
+  capoReparto: Utente;
 }
 
 export interface Magazine {

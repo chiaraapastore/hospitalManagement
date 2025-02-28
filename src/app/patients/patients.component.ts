@@ -18,6 +18,8 @@ import {Medicinale, MedicinaleService} from '../services/medicinale.service';
 export class PatientsComponent implements OnInit {
   patients: Paziente[] = [];
   medicinali: Medicinale[] = [];
+  somministrazioni: any[] = [];
+
 
 
   constructor(private patientService: PazienteService, private doctorService: DoctorService,private toastr: ToastrService, public dialog: MatDialog, private location: Location, private medicinaleService: MedicinaleService) {}
@@ -45,6 +47,9 @@ export class PatientsComponent implements OnInit {
       error: (err: any) => console.error('Errore nel caricamento dei pazienti', err)
     });
   }
+
+
+
 
   loadMedicinali(): void {
     this.medicinaleService.getMedicinaliDisponibili().subscribe({
@@ -78,26 +83,106 @@ export class PatientsComponent implements OnInit {
     });
   }
 
+  /*somministraMedicina(pazienteId: number, quantita: number): void {
+    console.log("Inizio somministrazione per paziente:", pazienteId, "Quantità:", quantita);
 
-  somministraMedicina(pazienteId: number): void {
-    const dialogRef = this.dialog.open(SomministraMedicinaDialogComponent, {
-      width: '350px',
-      data: { pazienteId, medicinali: this.medicinali },
-      disableClose: true
-    });
+    this.patientService.getRepartoByPaziente(pazienteId).subscribe({
+      next: (reparto) => {
+        console.log("Reparto ricevuto:", reparto);
 
-    dialogRef.afterClosed().subscribe(medicinaleId => {
-      if (medicinaleId) {
-        this.doctorService.somministraMedicine(pazienteId, medicinaleId).subscribe({
-          next: (response) => {
-            this.toastr.success(response, "Somministrazione effettuata");
-            this.loadPatients();
-          },
-          error: (err) => {
-            this.toastr.error("Errore nella somministrazione: " + err.message, "Errore");
-          }
+        const capoRepartoId = reparto.capoReparto.id;
+        console.log("Apro il dialog di somministrazione...");
+
+        const dialogRef = this.dialog.open(SomministraMedicinaDialogComponent, {
+          width: '350px',
+          data: { pazienteId, capoRepartoId, medicinali: this.medicinali }
         });
+
+        dialogRef.afterClosed().subscribe(selectedMedicinale => {
+          console.log("Dialog chiuso. Valore selezionato:", selectedMedicinale);
+
+          if (!selectedMedicinale || !selectedMedicinale.nome) {
+            console.warn("Nessun medicinale selezionato o valore non valido.");
+            return;
+          }
+
+          const nomeMedicinale = selectedMedicinale.nome;
+          const body = {
+            pazienteId: pazienteId,
+            capoRepartoId: capoRepartoId,
+            nomeMedicinale: nomeMedicinale,
+            quantita: quantita
+          };
+
+          console.log("Invio richiesta di somministrazione con body:", body);
+
+          this.doctorService.somministraMedicine(body).subscribe({
+            next: (response) => {
+              console.log("Somministrazione avvenuta con successo!", response);
+              this.toastr.success(response, "Somministrazione effettuata");
+              this.loadPatients();
+              this.loadSomministrazioni(pazienteId);
+            },
+            error: (err) => {
+              console.error("Errore nella somministrazione", err);
+              this.toastr.error("Errore nella somministrazione: " + err.message, "Errore");
+            }
+          });
+        });
+      },
+      error: (err) => {
+        this.toastr.error("Errore nel recupero del reparto: " + err.message, "Errore");
       }
     });
+  }
+*/
+
+  somministraMedicina(pazienteId: number, quantita: number): void {
+    this.patientService.getRepartoByPaziente(pazienteId).subscribe({
+      next: (reparto) => {
+        console.log("Reparto ricevuto:", reparto);
+        const capoRepartoId = reparto.capoReparto.id;
+
+        const dialogRef = this.dialog.open(SomministraMedicinaDialogComponent, {
+          width: '350px',
+          data: { pazienteId, medicinali: this.medicinali },
+          disableClose: true
+        });
+
+        dialogRef.afterClosed().subscribe(selectedMedicinale => {
+          console.log(" Dialog chiuso. Valore ricevuto:", selectedMedicinale);
+
+          if (!selectedMedicinale || !selectedMedicinale.nome) {
+            console.warn(" Nessun medicinale selezionato o valore non valido.");
+            return;
+          }
+
+          const nomeMedicinale = selectedMedicinale.nome;
+          console.log("Nome Medicinale inviato:", nomeMedicinale);
+
+          this.doctorService.somministraMedicine(pazienteId,capoRepartoId, nomeMedicinale, quantita).subscribe({
+            next: (response) => {
+              this.toastr.success(response, "Somministrazione effettuata");
+              this.loadPatients();
+            },
+            error: (err) => {
+              this.toastr.error("Errore nella somministrazione: " + err.message, "Errore");
+            }
+          });
+        });
+      },
+      error: (err) => {
+        this.toastr.error("Errore nel recupero del reparto: " + err.message, "Errore");
+      }
+    });
+  }
+
+
+
+  getQuantitaMedicina(): number {
+    if (this.medicinali.length > 0) {
+      return this.medicinali[0].quantita;
+    }
+    return 0;
   }
 }

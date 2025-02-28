@@ -65,7 +65,7 @@ export class AdminComponent implements OnInit {
   }
 
   loadNotifications(): void {
-    this.notificationService.getNotifications().subscribe({
+    this.notificationService.markAllNotificationsAsRead().subscribe({
       next: (data: any[]) => {
         this.notifications = data;
         this.unreadNotifications = data.filter(n => !n.letta).length;

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Paziente} from '../models/paziente';
 import {environment} from '../environments/environment';
+import {Department} from '../models/utente';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class PazienteService {
     return this.http.get(`${this.apiUrl}/${pazienteId}/cartella-clinica`, {
       responseType: 'blob'
     });
+  }
+
+  getRepartoByPaziente(pazienteId: number): Observable<Department> {
+    return this.http.get<Department>(`${this.apiUrl}/${pazienteId}/reparto`);
   }
 
 }

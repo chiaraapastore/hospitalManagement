@@ -33,7 +33,7 @@
             <button class="action-btn" title="Scarica Cartella Clinica" (click)="downloadMedicalRecord(patient.id)">
               <i class="fas fa-file-download"></i>
             </button>
-            <button class="action-btn" title="Somministra medicina" *ngIf="!patient.dimesso" (click)="somministraMedicina(patient.id)">
+            <button class="action-btn" title="Somministra medicina" *ngIf="!patient.dimesso" (click)="somministraMedicina(patient.id, getQuantitaMedicina())">
               <i class="fas fa-pills"></i>
             </button>
           </div>

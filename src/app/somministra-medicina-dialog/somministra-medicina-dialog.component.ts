@@ -52,10 +52,18 @@ export class SomministraMedicinaDialogComponent implements OnInit, AfterViewInit
   }
 
   confirm(): void {
-    if (!this.selectedMedicinale) return;
-    this.dialogRef.close({
+    if (!this.selectedMedicinale) {
+      console.warn("Nessun medicinale selezionato.");
+      return;
+    }
+
+    const dataToSend = {
       medicinaleNome: this.selectedMedicinale.nome,
       quantita: this.quantita
-    });
+    };
+
+    console.log("Chiusura dialog con dati:", dataToSend);
+    this.dialogRef.close(dataToSend);
   }
+
 }

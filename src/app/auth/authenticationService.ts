@@ -23,6 +23,24 @@ export class AuthenticationService {
     }
   }
 
+  async getLoggedInUser(): Promise<{ username?: string } | null> {
+    try {
+      const isAuthenticated = await this.keycloakService.isLoggedIn();
+      if (isAuthenticated) {
+        const keycloakInstance = this.keycloakService.getKeycloakInstance();
+        if (keycloakInstance && keycloakInstance.tokenParsed) {
+          const tokenParsed: any = keycloakInstance.tokenParsed;
+          const username = tokenParsed.preferred_username;
+          return { username };
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error("Errore durante il recupero dell'utente loggato:", error);
+      return null;
+    }
+  }
+
   async redirectUserByRole(): Promise<void> {
     const isAuthenticated = await this.keycloakService.isLoggedIn();
     if (isAuthenticated) {

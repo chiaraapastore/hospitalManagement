@@ -64,23 +64,16 @@ export class HeadOfDepartmentComponent implements OnInit {
       if (isLoggedIn) {
         const userProfile = await this.keycloakService.loadUserProfile();
         this.headOfDepartmentUsername = userProfile.username || 'Capo Reparto';
-        this.getUnreadNotifications();
       }
     } catch (error) {
       console.error('Errore nel recupero dell’utente:', error);
     }
   }
 
-  getUnreadNotifications() {
-    this.notificationService.getNotifications().subscribe(notifications => {
-      this.unreadNotifications = notifications.filter(n => !n.letta).length;
-    });
-  }
-
 
   loadNotifications() {
     if (!this.userId) return;
-    this.notificationService.getNotifications().subscribe({
+    this.notificationService.markAllNotificationsAsRead().subscribe({
       next: (notifications: any) => {
         this.notifications = notifications as Notification[];
         this.unreadNotifications = this.notifications.filter(n => n?.letta === false).length;

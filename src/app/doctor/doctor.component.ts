@@ -57,26 +57,18 @@ export class DoctorComponent implements OnInit {
       if (isLoggedIn) {
         const userProfile = await this.keycloakService.loadUserProfile();
         this.doctorUsername = userProfile.username || 'Dottore';
-        this.getUnreadNotifications();
       }
     } catch (error) {
       console.error('Errore nel recupero dell’utente:', error);
     }
   }
 
-  getUnreadNotifications() {
-    this.notificationService.getNotifications().subscribe(notifications => {
-      this.unreadNotifications = notifications.filter(n => !n.letta).length;
-    });
-  }
-
 
   loadNotifications() {
     if (!this.userId) return;
-    this.notificationService.getNotifications().subscribe({
+    this.notificationService.markAllNotificationsAsRead().subscribe({
       next: (notifications) => {
         this.notifications = notifications;
-        this.unreadNotifications = notifications.filter(n => !n.letta).length;
       },
       error: (err) => console.error('Errore nel recupero notifiche:', err)
     });
